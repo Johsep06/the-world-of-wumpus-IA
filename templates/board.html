@@ -1,0 +1,31 @@
+{% for i in range(size) %}
+    <div class="row">
+        {% for j in range(size) %}
+            <div id="cell-{{ i }}-{{ j }}"
+            {% if map[i][j] == 'f' %}
+                class="cell smelly-cell"
+            {% elif map[i][j] == 'v' %}
+                class="cell breeze-cell"
+            {% elif map[i][j]  == 'b' %}
+                class="cell shinny-cell"
+            {% else %}
+                class="cell commun-cell"
+            {% endif %}
+            >
+
+                {% if board[i][j] == 'A' %}
+                    <img id="agente" src="{{url_for('static', filename='assets/agente.png')}}" alt="Guerreiro">
+                {% elif board[i][j] == 'W' %}
+                    <img id="wumpus" src="{{url_for('static', filename='assets/wumpus.png')}}" alt="Wumpus">
+                {% elif board[i][j] == 'P' %}
+                    <img id="poco" src="{{url_for('static', filename='assets/poço.png')}}" alt="Poço">
+                {% elif board[i][j] == 'G' %}
+                    <img id="gold" src="{{url_for('static', filename='assets/ouro.png')}}" alt="Ouro">
+                {% else %}
+                    {{ board[i][j] }}
+                {% endif %}
+
+            </div>
+        {% endfor %}
+    </div>
+{% endfor %}
