@@ -1,9 +1,9 @@
-from random import randint
+from random import randrange
 from celula import Celula
 
 class Ambiente(object):
     def __init__(self, size: int, qtd_pocos: int, qtd_wumpus:int=1, qtd_gold:int=1) -> None:
-        self.__size = size - 1
+        self.__size = size
         self.__posX = 0
         self.__posY = 0
 
@@ -25,11 +25,14 @@ class Ambiente(object):
         out += f'\nPercepção: {percp}'
         return out
     
+    def __len__(self) -> int:
+        return self.__size
+    
     def __setGold(self):
         i,j = 0,0
         while True:
-            i = randint(0, self.__size)
-            j = randint(0, self.__size)
+            i = randrange(0, self.__size)
+            j = randrange(0, self.__size)
 
             if i == 0 and j == 0: continue
             if self.__board[i][j].getObjeto() != '': continue
@@ -42,8 +45,8 @@ class Ambiente(object):
     def __setObjeto(self, simblo: str, percepcao: str):
         i,j = 0,0
         while True:
-            i = randint(0, self.__size)
-            j = randint(0, self.__size)
+            i = randrange(0, self.__size)
+            j = randrange(0, self.__size)
 
             if i == 0 and j == 0: continue
             if self.__board[i][j].getObjeto() != '': continue
@@ -55,23 +58,23 @@ class Ambiente(object):
         if i != 0:
             self.__board[i - 1][j].setPercepcao(percepcao)
         
-        if i != self.__size:
+        if i != self.__size - 1:
             self.__board[i + 1][j].setPercepcao(percepcao)
 
         if j != 0:
             self.__board[i][j - 1].setPercepcao(percepcao)
         
-        if j != self.__size:
+        if j != self.__size - 1:
             self.__board[i][j + 1].setPercepcao(percepcao)
 
     def set_out(self, exibir: bool):
         if exibir:
-            for i in range(self.__size + 1):
-                for j in range(self.__size + 1):
+            for i in range(self.__size):
+                for j in range(self.__size):
                     self.__board[i][j].setOut(1)
         else:
-            for i in range(self.__size + 1):
-                for j in range(self.__size + 1):
+            for i in range(self.__size):
+                for j in range(self.__size):
                     self.__board[i][j].setOut(0)
 
     def get_board(self) -> list[list[str]]:
@@ -108,15 +111,13 @@ class Ambiente(object):
                 return True, 2
 
             if self.__board[posY][posX].getObjeto() == 'P':
-                print('\n\nVocê foi caiu no Poço')
                 return True, 3
             
             if posX == 0 and posY == 0 and 'G' in bag:
-                print('\n\n!!!!! Você Venceu !!!!!\n\n')
                 return True, 1
-            else: return False, 0
+            else: return True, 0
         except:
-            return True, -1
+            return False, -1
 
     def getGold(self) -> bool:
         if self.__board[self.__posY][self.__posX].getObjeto() == 'G':
@@ -138,3 +139,6 @@ class Ambiente(object):
                 aux.append(str(c.getOut()))
             tabu.append(aux.copy())
         return tabu
+    
+    def get_percepcao(self, pos_x: int, pos_y: int) -> str:
+        return self.__board[pos_y][pos_x].getPercepcao()
