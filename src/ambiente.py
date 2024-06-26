@@ -1,5 +1,5 @@
 from random import randrange
-from celula import Celula
+from src.celula import Celula
 
 class Ambiente(object):
     def __init__(self, size: int, qtd_pocos: int, qtd_wumpus:int=1, qtd_gold:int=1) -> None:
@@ -11,7 +11,7 @@ class Ambiente(object):
 
         for i in range(qtd_gold): self.__setGold()
         for i in range(qtd_wumpus): self.__setObjeto('W', 'f')
-        for i in range(qtd_pocos): self.__setObjeto('P', 'b')
+        for i in range(qtd_pocos): self.__setObjeto('P', 'v')
 
     def __str__(self) -> str:
         out = ''
@@ -40,7 +40,7 @@ class Ambiente(object):
             break
 
         self.__board[i][j].setObjeto('G')
-        self.__board[i][j].setPercepcao('B')
+        self.__board[i][j].setPercepcao('b')
 
     def __setObjeto(self, simblo: str, percepcao: str):
         i,j = 0,0
@@ -71,7 +71,14 @@ class Ambiente(object):
         if exibir:
             for i in range(self.__size):
                 for j in range(self.__size):
-                    self.__board[i][j].setOut(1)
+                    if self.__board[i][j].getValue() == 'A':
+                        if self.__board[i][j].getObjeto() in ['O', '']:
+                            self.__board[i][j].setOut(0)
+                        else:
+                            self.__board[i][j].setOut(1)
+
+                    else: self.__board[i][j].setOut(1)
+                            
         else:
             for i in range(self.__size):
                 for j in range(self.__size):
@@ -137,6 +144,15 @@ class Ambiente(object):
             aux = []
             for c in t:
                 aux.append(str(c.getOut()))
+            tabu.append(aux.copy())
+        return tabu
+
+    def get_percepcoes(self) -> list[list[str]]:
+        tabu = []
+        for t in self.__board:
+            aux = []
+            for c in t:
+                aux.append(str(c.getPercepcao()))
             tabu.append(aux.copy())
         return tabu
     

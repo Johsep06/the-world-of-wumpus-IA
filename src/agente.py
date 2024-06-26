@@ -1,5 +1,4 @@
-from ambiente import Ambiente
-from celula import Celula
+from src.ambiente import Ambiente
 
 class Agente(object):
     __pos = {'x':0, 'y':0}

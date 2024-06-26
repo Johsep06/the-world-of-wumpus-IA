@@ -9,20 +9,14 @@ board_route = Blueprint('board', __name__)
 #     ['','', '', 'P'],
 #     ['','W', '', 'G']
 # ]
-
-__board = tabu.getMap()
-print(__board)
-__map = [
-    ['','', 'v', ''],
-    ['','v', '', 'v'],
-    ['','f', 'v', ''],
-    ['f','', 'f', 'b']
-]
+board.set_out(True)
+__tabu = board.getMap()
+__map = board.get_percepcoes()
 
 __agente = [0, 0]
 
-size = 4
+size = len(board)
 
 @board_route.route('/')
 def create_board():
-    return render_template('board.html', board=__board, size=size, map=__map, agente=__agente)
+    return render_template('board.html', board=__tabu, size=size, map=__map, agente=__agente)
