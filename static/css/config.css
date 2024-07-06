@@ -12,10 +12,16 @@
     border-radius: 5%;
 }
 
+.chartdiv {
+    height: 100px;
+    width: 150px;
+    display: grid;
+    place-items: center;
+}
+
 #chartdiv {
-    height: 15%;
-    width: 15%;
-    position: absolute;
+    height: 100px;
+    width: 150px;
 }
 
 h1 {
