@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    color: white;
 }
 
 body {
@@ -11,7 +12,7 @@ body {
     background-image: radial-gradient(circle at 90.56% 107.92%, #a02a89 0, #86247e 16.67%, #6a1c71 33.33%, #4e1460 50%, #330c4e 66.67%, #1c043e 83.33%, #0c0030 100%);
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .container {
@@ -19,7 +20,17 @@ body {
     width: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-evenly;
+}
+
+button {
+    width: 15%;
+    height: 5%;
+    background-color: #000000;
+    opacity: 0.5;
+    color: white;
+    border: 2px solid white;
 }
 
 #statistics {

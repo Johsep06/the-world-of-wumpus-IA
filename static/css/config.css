@@ -1,0 +1,37 @@
+.container-config{
+    height: 90vh;
+    width: calc(100vw / 3.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #000000;
+    opacity: 0.5;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5%;
+}
+
+#chartdiv {
+    height: 15%;
+    width: 15%;
+    position: absolute;
+}
+
+h1 {
+    width: 100%;
+    font-size: 200%;
+    display: grid;
+    place-items: center;
+}
+
+.play {
+    height: 5%;
+    width: 20%;
+    background-image: radial-gradient(circle at 90.56% 107.92%, #a02a89 0, #86247e 16.67%, #6a1c71 33.33%, #4e1460 50%, #330c4e 66.67%, #1c043e 83.33%, #0c0030 100%);
+    border: 2px solid white;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

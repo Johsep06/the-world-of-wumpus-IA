@@ -2,12 +2,12 @@
     <div class="row">
         {% for j in range(size) %}
             <div id="cell-{{ i }}-{{ j }}"
-            {% if map[i][j] == 'f' %}
-                class="cell smelly-cell"
-            {% elif map[i][j] == 'v' %}
-                class="cell breeze-cell"
-            {% elif map[i][j]  == 'b' %}
+            {% if 'b' in map[i][j] %}
                 class="cell shinny-cell"
+            {% elif 'f' in map[i][j] %}
+                class="cell smelly-cell"
+            {% elif 'v' in map[i][j] %}
+                class="cell breeze-cell"
             {% else %}
                 class="cell commun-cell"
             {% endif %}
