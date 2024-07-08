@@ -1,22 +1,19 @@
 from flask import Blueprint, render_template
-from src.main import *
+from src.agente import Agente
+from src.ambiente import Ambiente
+from src.agente_aleatorio import AgenteAleatorio
 
 board_route = Blueprint('board', __name__)
 
-# __board = [
-#     ['A','', '', 'P'],
-#     ['','', 'P', ''],
-#     ['','', '', 'P'],
-#     ['','W', '', 'G']
-# ]
-board.set_out(True)
-__tabu = board.getMap()
-__map = board.get_percepcoes()
-
-__agente = [0, 0]
-
-size = len(board)
+board = Ambiente(4, 3)
+ia = AgenteAleatorio(board)
 
 @board_route.route('/')
 def create_board():
-    return render_template('board.html', board=__tabu, size=size, map=__map, agente=__agente)
+    board.set_out(True)
+
+    return render_template('board.html', 
+                           board=board.getMap(), 
+                           map=board.get_percepcoes(), 
+                           size=len(board)
+                        )

@@ -5,13 +5,28 @@ class Agente(object):
     __bag = []
     __pts = 0
     __flecha = 1
+    __status = {'n_passos':0, 'status_partida':'', 'percepção':''}
 
     def __init__(self, board: Ambiente) -> None:
         self.__board = board
         self.__board.setAgente(self.__pos['x'], self.__pos['y'])
+        self.__status['tamanho do mapa'] = len(board)
     
     def getPts(self) -> int:
         return self.__pts
+    
+    def get_bag(self): return self.__bag
+    
+    def get_pos(self) -> list[int]:
+        return [self.__pos['y'], self.__pos['x']]
+    
+    def get_status(self) -> dict[str,any]:
+        '''
+        n_passos: int.\n
+        status_partida [0:nada, 1:vitoria, 2:Wumpus, 3:poço ].\n
+        percepção
+        '''
+        return self.__status
     
     def __mover(self, direcao:str) -> int:
         '''Retorna
@@ -23,40 +38,43 @@ class Agente(object):
         \n4 - Movomento inválido
         '''
 
+        status_aux = {0:'n', 1:'v', 2:'w', 3:'p'}
+
         if direcao == 'N':
             if self.__pos['y'] == 0: return 4
             self.__pos['y'] -= 1
-            self.__pts -= 1
 
         elif direcao == 'S':
             if self.__pos['y'] == len(self.__board) - 1: return 4
             self.__pos['y'] += 1
-            self.__pts -= 1
             
         elif direcao == 'L':
             if self.__pos['x'] == len(self.__board) - 1: return 4
             self.__pos['x'] += 1
-            self.__pts -= 1
 
         elif direcao == 'O':
             if self.__pos['x'] == 0: return 4
             self.__pos['x'] -= 1
-            self.__pts -= 1
             
         status_operacao, resultado = self.__board.changeAgente(self.__pos['x'], self.__pos['y'], self.__bag)
 
         if not status_operacao: return -1
 
+        self.__pts -= 1
+        self.__status['n_passos'] += 1
+        self.__status['percepção'] = self.__board.get_percepcao(self.__pos['x'], self.__pos['y'])
+
         if resultado == 1: self.__pts += 1_000
         elif resultado == 2 or resultado == 3: self.__pts -= 1_000
 
+        self.__status['status_partida'] = status_aux[resultado]
         return resultado
     
     def __pegar(self) -> bool:
         tem_ouro = self.__board.getGold()
 
         if tem_ouro:
-            self.__bag = 'G'
+            self.__bag.append('G')
         
         return tem_ouro
 
@@ -102,37 +120,42 @@ class Agente(object):
         if result: return 3
         else: return 2
 
-    def acao(self, acao:str) -> int:
+    def acao(self, acao:str) -> bool:
         '''
         Movimento: [N, S, L, O].
         Flecha: [n, s, l, o].
         pegar: x
         '''
+        concluido = False
 
         if acao in ['N', 'S', 'L', 'O']:
             self.__mover(acao)
+            concluido = True
         elif acao in ['n', 's', 'l', 'o']:
             self.__atirar(acao)
+            concluido = True
         elif acao == 'x':
             self.__pegar()
+            concluido = True
+        
+        return concluido
         
     def get_acoes(self) -> dict[str,list]:
-        acoes = {'M':[]}
+        moves = {'M':[]}
 
-        if self.__pos['y'] != 0: acoes['M'].append('N')
-        if self.__pos['y'] != len(self.__board): acoes['M'].append('S')
-        if self.__pos['x'] != len(self.__board): acoes['M'].append('L')
-        if self.__pos['x'] != 0: acoes['M'].append('O')
+        if self.__pos['y'] != 0: moves['M'].append('N')
+        if self.__pos['y'] != len(self.__board): moves['M'].append('S')
+        if self.__pos['x'] != len(self.__board): moves['M'].append('L')
+        if self.__pos['x'] != 0: moves['M'].append('O')
 
         if self.__board.get_percepcao(self.__pos['x'], self.__pos['y']) == 'f':
-            acoes['F'] = []
-            if self.__pos['y'] != 0: acoes['F'].append('N')
-            if self.__pos['y'] != len(self.__board): acoes['F'].append('S')
-            if self.__pos['x'] != len(self.__board): acoes['F'].append('L')
-            if self.__pos['x'] != 0: acoes['F'].append('O')
+            moves['F'] = []
+            if self.__pos['y'] != 0: moves['F'].append('n')
+            if self.__pos['y'] != len(self.__board): moves['F'].append('s')
+            if self.__pos['x'] != len(self.__board): moves['F'].append('l')
+            if self.__pos['x'] != 0: moves['F'].append('o')
             
-        if self.__board.get_percepcao(self.__pos['x'], self.__pos['y']) == 'B':
-            acoes['P'] = ['x']
-            pass
+        if self.__board.get_percepcao(self.__pos['x'], self.__pos['y']) == 'b':
+            moves['P'] = ['x']
 
-        return acoes
+        return moves

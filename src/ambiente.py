@@ -108,7 +108,7 @@ class Ambiente(object):
         '''
         try:
             self.__board[self.__posY][self.__posX].setValue('')
-            self.__board[self.__posY][self.__posX].setOut(0)
+            self.__board[self.__posY][self.__posX].setOut(1)
             self.__board[posY][posX].setValue('A')
             self.__board[posY][posX].setOut(0)
             self.__posX = posX
@@ -127,6 +127,7 @@ class Ambiente(object):
             return False, -1
 
     def getGold(self) -> bool:
+        print([self.__posY],[self.__posX])
         if self.__board[self.__posY][self.__posX].getObjeto() == 'G':
             self.__board[self.__posY][self.__posX].setObjeto('')
             return True

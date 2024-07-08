@@ -6,3 +6,8 @@ O mundo de wumpus é um projeto que visa criar um ambiente virtual e submeter tr
 ```
 $ pip install -r requirements.txt
 ```
+
+### Run
+```
+$ flask --app app run
+```

@@ -3,13 +3,13 @@
         {% for j in range(size) %}
             <div id="cell-{{ i }}-{{ j }}"
             {% if 'b' in map[i][j] %}
-                class="cell shinny-cell"
+                class="cell shinny-cell back-b"
             {% elif 'f' in map[i][j] %}
-                class="cell smelly-cell"
+                class="cell smelly-cell back-b"
             {% elif 'v' in map[i][j] %}
-                class="cell breeze-cell"
+                class="cell breeze-cell back-b"
             {% else %}
-                class="cell commun-cell"
+                class="cell commun-cell back-b"
             {% endif %}
             >
 
