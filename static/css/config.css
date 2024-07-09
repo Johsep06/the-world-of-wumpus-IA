@@ -55,7 +55,10 @@ footer {
     height: 10vh;
     width: 100vw;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 5vh;
+    padding-right: 5vh;
 }
 
 .size-input {

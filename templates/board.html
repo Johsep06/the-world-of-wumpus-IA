@@ -15,6 +15,8 @@
 
                 {% if board[i][j] == 'A' %}
                     <img id="agente" src="{{url_for('static', filename='assets/agente.png')}}" alt="Guerreiro">
+                {% elif board[i][j] == 'S' %}
+                    <img id="wumpus" src="{{url_for('static', filename='assets/porta.png')}}" alt="Wumpus">
                 {% elif board[i][j] == 'W' %}
                     <img id="wumpus" src="{{url_for('static', filename='assets/wumpus.png')}}" alt="Wumpus">
                 {% elif board[i][j] == 'P' %}

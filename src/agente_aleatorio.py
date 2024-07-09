@@ -10,10 +10,13 @@ class AgenteAleatorio(Agente):
         moves = super().get_acoes()
         
         keys = list(moves.keys())
+        decisao = ''
 
         if 'P' in keys:
-            self.acao(moves['P'][0])
+            decisao = choice(moves['P'])
         elif 'F' in keys:
-            self.acao(choice(moves['F']))
+            decisao = choice(moves['F'])
         else: 
-            self.acao(choice(moves['M']))
+            decisao = choice(moves['M'])
+
+        self.acao(decisao)

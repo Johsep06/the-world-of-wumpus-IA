@@ -2,7 +2,7 @@ class Celula(object):
     def __init__(self, value: str) -> None:
         self.__value = value
         self.__objeto = ''
-        self.__percepcao = [' ']
+        self.__percepcao = ['']
         self.__out = value
     
     

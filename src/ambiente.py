@@ -8,6 +8,7 @@ class Ambiente(object):
         self.__posY = 0
 
         self.__board = [[Celula('') for j in range(size)] for i in range(size)]
+        self.__board[self.__posY][self.__posX].setObjeto('S')
 
         for i in range(qtd_gold): self.__setGold()
         for i in range(qtd_wumpus): self.__setObjeto('W', 'f')
@@ -126,11 +127,15 @@ class Ambiente(object):
         except:
             return False, -1
 
-    def getGold(self) -> bool:
-        print([self.__posY],[self.__posX])
-        if self.__board[self.__posY][self.__posX].getObjeto() == 'G':
+    def getGold(self, pegar=True) -> bool:
+        if self.__board[self.__posY][self.__posX].getObjeto() == 'G' and pegar:
             self.__board[self.__posY][self.__posX].setObjeto('')
+            self.__board[self.__posY][self.__posX].setPercepcao('')
             return True
+        
+        elif not pegar and self.__board[self.__posY][self.__posX].getObjeto() == 'G':
+            return True
+
         else: return False
 
     def killWumpus(self, posX:int, posY:int) -> bool:
