@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 #statistics {
@@ -77,3 +77,62 @@ img {
 .shinny-cell {
     border: 2px solid gold;
 }
+
+.button {
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    display: grid;
+    place-items: center;
+    border: none;
+    font-weight: bold;
+}
+
+button:hover {
+    opacity: 0.7;
+}
+
+#status {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#buttons {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+}
+
+.lateral {
+    font-size: x-large;
+    font-weight: bold;
+    height: 15%;
+    width: 100%;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+}
+
+.invetory {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.flecha {
+    height: 40px;
+    width: 40px;
+}
+
+/* #pts {
+    height: 10%;
+} */

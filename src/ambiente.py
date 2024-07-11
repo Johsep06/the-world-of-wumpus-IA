@@ -90,7 +90,10 @@ class Ambiente(object):
         for linha in self.__board:
             aux = []
             for celula in linha:
-                aux.append(celula.getOut())
+                if celula.getValue() == 'A':
+                    aux.append(celula.getValue())
+                else:
+                    aux.append(celula.getOut())
             tabuleiro.append(aux.copy())
         return tabuleiro
 

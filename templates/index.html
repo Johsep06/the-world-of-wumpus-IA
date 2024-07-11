@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='js/cru.js')  }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/cru.js')  }}"></script> -->
 </head>
-<body>
+<body class="back-grad">
     <div class="container" id="">
-        <div class="button back-b" onclick="change_page({{ url_for('config.config') }})">
+        <div class="button back-b op-1" onclick="change_page({{ url_for('config.config') }})">
             <strong> Iniciar </strong>
         </div>
         <div class="button back-b text-decoration-line-through"> <strong> Estatísticas </strong> </div>

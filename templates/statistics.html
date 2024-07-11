@@ -1,0 +1,23 @@
+<!--
+    n_passos
+    percepcao
+    percepcao
+-->
+
+<div id="pts" class="back-b lateral">Pontos: {{ pts }}</div>
+<div class="passos back-b lateral">Nº de Passos: {{ passos }} </div>
+<div class="invetory back-b lateral">
+    {% for i in range(bag) %}
+        <div class="flecha">
+            <img src="{{url_for('static', filename='assets/ouro.png')}}" alt="ouro">
+        </div>
+    {% endfor %}
+</div>
+<div class="invetory back-b lateral">
+    {% for i in range(flecha) %}
+        <div class="flecha">
+            <img src="{{url_for('static', filename='assets/flecha.png')}}" alt="flecha">
+        </div>
+    {% endfor %}
+</div>
+<div class="prompt back-b lateral">{{ percepcao }}</div>

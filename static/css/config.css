@@ -44,7 +44,6 @@ h1 {
 .play {
     height: 5%;
     width: 20%;
-    background-image: radial-gradient(circle at 90.56% 107.92%, #a02a89 0, #86247e 16.67%, #6a1c71 33.33%, #4e1460 50%, #330c4e 66.67%, #1c043e 83.33%, #0c0030 100%);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -56,7 +55,7 @@ footer {
     width: 100vw;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     padding-left: 5vh;
     padding-right: 5vh;
 }
@@ -68,5 +67,32 @@ footer {
 
 .size-input-text{
     color: white;
-    font-size: large;
+    font-size: xx-large;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #a02a89;
+    border-radius: 5px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background .1s;
+}
+
+#size-value {
+    font-size: x-large;
+    display: grid;
+    place-items: center;
+    margin-left: 15px;
+    opacity: 0.7;
 }

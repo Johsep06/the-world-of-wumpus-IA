@@ -5,15 +5,19 @@ class Agente(object):
     __bag = []
     __pts = 0
     __flecha = 1
-    __status = {'n_passos':0, 'status_partida':'n', 'percepção':'', 'historico':'', 'wumpus':'v'}
+    __status = {'n_passos':0, 'status_partida':'n', 'percepcao':'', 'historico':'', 'wumpus':'v'}
 
-    def __init__(self, board: Ambiente) -> None:
+    def __init__(self, board: Ambiente, tipo_agente:int=0) -> None:
         self.__board = board
         self.__board.setAgente(self.__pos['x'], self.__pos['y'])
-        self.__status['tamanho do mapa'] = len(board)
+        self.__status['tamanho_do_mapa'] = len(board)
+        self.__status['tipo_agente'] = tipo_agente
     
     def getPts(self) -> int:
         return self.__pts
+    
+    def get_flechas(self) -> int:
+        return self.__flecha
     
     def get_bag(self): return self.__bag
     
@@ -24,11 +28,18 @@ class Agente(object):
         '''
         n_passos: int.
         status_partida [n:normal, v:vitoria, w:Wumpus, p:poço ].
-        percepção: str.
+        percepcao: str.
         historico: historido de acoes
         wumpus: [v: vivo, m: morto]
+        pts: int
+        tamanho_do_mapa: int
+        tipo_agente: [0:jogador, 1:aleatório, 2:memoria, 3:aprendizado]
+        bag: str
+        flechas: int
         '''
         self.__status['pts'] = self.__pts
+        # self['flechas'] = self.__flecha
+        # self['bag'] = ''.join(self.__bag)
         return self.__status
     
     def __mover(self, direcao:str) -> int:
@@ -65,7 +76,7 @@ class Agente(object):
 
         self.__pts -= 1
         self.__status['n_passos'] += 1
-        self.__status['percepção'] = self.__board.get_percepcao(self.__pos['x'], self.__pos['y'])
+        self.__status['percepcao'] = self.__board.get_percepcao(self.__pos['x'], self.__pos['y'])
 
         if resultado == 1: self.__pts += 1_000
         elif resultado == 2 or resultado == 3: self.__pts -= 1_000

@@ -4,7 +4,7 @@ from random import choice
 
 class AgenteAleatorio(Agente):
     def __init__(self, board: Ambiente) -> None:
-        super().__init__(board)
+        super().__init__(board, tipo_agente=1)
 
     def agir(self):
         moves = super().get_acoes()
