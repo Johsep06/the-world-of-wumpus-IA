@@ -78,6 +78,8 @@ class AgenteReativo2(Agente):
             self.__voltar = True
             self.acao('x')
 
+        
+
         # if 'f' in status['percepção'] or 'v' in status['percepção']:
         #     self.atualizar_memoria('status['percepção']')
 

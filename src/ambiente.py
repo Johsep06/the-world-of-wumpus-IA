@@ -8,7 +8,7 @@ class Ambiente(object):
         self.__posY = 0
 
         self.__board = [[Celula('') for j in range(size)] for i in range(size)]
-        self.__board[self.__posY][self.__posX].setObjeto('S')
+        self.__board[0][0].setObjeto('S')
 
         for i in range(qtd_gold): self.__setGold()
         for i in range(qtd_wumpus): self.__setObjeto('W', 'f')

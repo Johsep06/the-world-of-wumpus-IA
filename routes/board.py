@@ -1,38 +1,39 @@
 from flask import Blueprint, render_template
-from src.agente import Agente
-from src.ambiente import Ambiente
-from src.agente_aleatorio import AgenteAleatorio
-from src.app import *
+from src.app import Game
 
 board_route = Blueprint('board', __name__)
 
+jogo = Game()
+
 @board_route.route('/')
 def create_board():
-    novo_jogo(4)
-    seletor_agente(1)
+    jogo.new_game(4, 1)
 
     return render_template('board.html', 
-                           board=board(), 
-                           map=map(),
-                           size=size()
+                           board=jogo.tabuleiro(), 
+                           map=jogo.get_percepcoes(),
+                           size=len(jogo)
                         )
 
 @board_route.route('/update')
 def update_board():
-    acao()
+    jogo.jogada()
+
     return render_template('board.html', 
-                           board=board(), 
-                           map=map(),
-                           size=size()
+                           board=jogo.tabuleiro(), 
+                           map=jogo.get_percepcoes(),
+                           size=len(jogo)
                         )
 
 @board_route.route('/status')
 def status():
-    status = get_relatorio()
-    return render_template('statistics.html', 
+    status = jogo.get_relatorio()
+
+    return render_template('statistics.html',
                            pts=status['pts'],
                            passos=status['n_passos'],
                            percepcao=status['percepcao'],
                            flecha=status['flecha'],
-                           bag=len(status['bag'])
+                           bag=len(status['bag']),
+                           status=status['percepcao']
                            )

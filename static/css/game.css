@@ -114,25 +114,34 @@ button:hover {
 .lateral {
     font-size: x-large;
     font-weight: bold;
-    height: 15%;
     width: 100%;
     border-radius: 10px;
     display: grid;
     place-items: center;
 }
 
-.invetory {
+.contador {
+    height: 30%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-around;
 }
 
-.flecha {
-    height: 40px;
-    width: 40px;
+.icon {
+    height: 60px;
+    width: 60px;
 }
 
-/* #pts {
-    height: 10%;
-} */
+.pts {
+    height: 20%;
+    font-style: oblique;
+}
+
+.none {
+    display: none;
+}
+
+#prompt{
+    height: 40%;
+}
