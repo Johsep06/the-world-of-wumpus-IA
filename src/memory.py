@@ -61,7 +61,7 @@ class Memory(object):
         elif direcao == 'O':
             self.__memory[pos_i][pos_j - 1]['L'] = dado
 
-    def calcular_movimento(self, pos_i:int, pos_j:int):
+    def explorar(self, pos_i:int, pos_j:int, historico:str):
         celula = self.__memory[pos_i][pos_j]
         direcoes = 'NSLO'
         moves = ''
@@ -69,10 +69,89 @@ class Memory(object):
         for i in direcoes:
             moves += celula[i]
         
-        if 'v' in celula['C']:
+        if len(historico) > 10:
+            if 'NS'*5 == historico[-10:] or 'LO'*5 == historico[-10:]:
+                result = -1
+                for i in range(4):
+                    result += 1
+                    if moves[result] != ' ' and moves[result] != 'S':
+                        break
+                return direcoes[result]
+
+        if 'c' in celula['C']:
+            if 'd' in moves:
+                return direcoes[moves.find('d')]
+            elif 'c' in moves:
+                return direcoes[moves.find('c')]
+            elif 'S' in moves:
+                return direcoes[moves.find('S')]
+            else:
+                result = -1
+                for i in range(4):
+                    result += 1
+                    if moves[result] != ' ':
+                        break
+                return direcoes[result]
+            
+        elif 'f' in celula['C']:
             if 'S' in moves:
                 return direcoes[moves.find('S')]
             elif 'c' in moves:
                 return direcoes[moves.find('c')]
             elif 'd' in moves:
                 return direcoes[moves.find('d')]
+            else:
+                result = -1
+                for i in range(4):
+                    result += 1
+                    if moves[result] != ' ':
+                        break
+                return direcoes[result]
+            
+        elif 'v' in celula['C']:
+            if 'S' in moves:
+                return direcoes[moves.find('S')]
+            elif 'c' in moves:
+                return direcoes[moves.find('c')]
+            elif 'd' in moves:
+                return direcoes[moves.find('d')]
+            else:
+                result = -1
+                for i in range(4):
+                    result += 1
+                    if moves[result] != ' ':
+                        break
+                return direcoes[result]
+
+
+            
+    def sair(self, pos_i:int, pos_j:int):
+        celula = self.__memory[pos_i][pos_j]
+        direcoes = 'NLSO'
+        moves = ''
+
+        for i in direcoes:
+            moves += celula[i]
+        
+        if 'S' in moves:
+            return direcoes[moves.find('S')]
+        
+        elif 'c' in moves:
+            return direcoes[moves.find('c')]
+        
+        elif 'd' in moves:
+            return direcoes[moves.find('d')]
+
+        elif 'v' in moves:
+            return direcoes[moves.find('v')]
+
+        elif 'f' in moves:
+            return direcoes[moves.find('f')]
+        else:
+                result = -1
+                for i in range(4):
+                    result += 1
+                    if moves[result] != ' ':
+                        break
+                return direcoes[result]
+        
