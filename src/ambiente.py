@@ -19,6 +19,7 @@ class Ambiente(object):
         for i in self.__board:
             aux = []
             for j in i: aux.append(j.getOut())
+            
             out += ' | '.join(aux)
             out += '\n'
 

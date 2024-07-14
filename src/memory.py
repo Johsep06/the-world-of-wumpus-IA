@@ -61,26 +61,55 @@ class Memory(object):
         elif direcao == 'O':
             self.__memory[pos_i][pos_j - 1]['L'] = dado
 
-    def explorar(self, pos_i:int, pos_j:int, historico:str):
+    def explorar(self, pos_i:int, pos_j:int, historico:str, flechas:int, w:str):
         celula = self.__memory[pos_i][pos_j]
-        direcoes = 'NSLO'
+        direcoes = 'SLON'
         moves = ''
 
         for i in direcoes:
             moves += celula[i]
         
-        if len(historico) > 10:
-            if 'NS'*5 == historico[-10:] or 'LO'*5 == historico[-10:]:
-                result = -1
-                for i in range(4):
-                    result += 1
-                    if moves[result] != ' ' and moves[result] != 'S':
-                        break
-                return direcoes[result]
+        # if len(historico) > 10:
+        #     if 'NS'*5 == historico[-10:] or 'LO'*5 == historico[-10:]:
+        #         result = -1
+        #         for i in range(4):
+        #             result += 1
+        #             if moves[result] != ' ' and moves[result] != 'S':
+        #                 break
+        #         return direcoes[result]
 
-        if 'c' in celula['C']:
+        if moves.count('f') == 2 and w == 'v':
+            if 'f' in celula['N']:
+                if 'f' in celula['L']:
+                    self.set_info(pos_i - 1, pos_j + 1, 'W')
+                else:
+                    self.set_info(pos_i - 1, pos_j - 1, 'W')
+            else:
+                if 'f' in celula['L']:
+                    self.set_info(pos_i + 1, pos_j + 1, 'W')
+                else:
+                    self.set_info(pos_i + 1, pos_j - 1, 'W')
+
+        if 'W' in moves and flechas != 0:
+            if 'W' in celula['N']:
+                if 'W' in celula['L']:
+                    self.set_info(pos_i - 1, pos_j + 1, 'c')
+                else:
+                    self.set_info(pos_i - 1, pos_j - 1, 'c')
+            else:
+                if 'W' in celula['L']:
+                    self.set_info(pos_i + 1, pos_j + 1, 'c')
+                else:
+                    self.set_info(pos_i + 1, pos_j - 1, 'c')
+
+            return direcoes[moves.find('W')].lower()
+
+
+        elif 'c' in celula['C']:
             if 'd' in moves:
                 return direcoes[moves.find('d')]
+            elif 'f' in moves:
+                return direcoes[moves.find('f')]
             elif 'c' in moves:
                 return direcoes[moves.find('c')]
             elif 'S' in moves:
@@ -94,9 +123,9 @@ class Memory(object):
                 return direcoes[result]
             
         elif 'f' in celula['C']:
-            if 'S' in moves:
+            if 'S' in moves and w == 'v':
                 return direcoes[moves.find('S')]
-            elif 'c' in moves:
+            elif 'c' in moves and w == 'v':
                 return direcoes[moves.find('c')]
             elif 'd' in moves:
                 return direcoes[moves.find('d')]
@@ -134,6 +163,7 @@ class Memory(object):
             moves += celula[i]
         
         if 'S' in moves:
+            print(moves)
             return direcoes[moves.find('S')]
         
         elif 'c' in moves:

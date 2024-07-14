@@ -30,7 +30,8 @@ class AgenteReativo2(Agente):
                 self.acao('x')
             else:
                 historico = self.get_status()['historico']
-                move = self.__memory.explorar(pos_i, pos_j, historico)
+                w = self.get_status()['wumpus']
+                move = self.__memory.explorar(pos_i, pos_j, historico, self.get_flechas(), w)
 
                 if not('v' in  status['percepcao'] or 'f' in  status['percepcao']):
                     self.__memory.set_anterior(pos_i, pos_j, 'S', move)

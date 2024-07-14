@@ -10,7 +10,7 @@ class Agente(object):
     def __init__(self, board: Ambiente, tipo_agente:int=0) -> None:
         self.__board = board
         self.__board.setAgente(self.__pos['x'], self.__pos['y'])
-        self.__status['tamanho_do_mapa'] = len(board)
+        self.__status['tamanho_mapa'] = len(board)
         self.__status['tipo_agente'] = tipo_agente
     
     def getPts(self) -> int:
@@ -32,7 +32,7 @@ class Agente(object):
         historico: historido de acoes
         wumpus: [v: vivo, m: morto]
         pts: int
-        tamanho_do_mapa: int
+        tamanho_mapa: int
         tipo_agente: [0:jogador, 1:aleatório, 2:memoria, 3:aprendizado]
         bag: str
         flechas: int
@@ -134,6 +134,7 @@ class Agente(object):
         self.__pts -= 10
         if result: 
             self.__status['wumpus'] = 'm'
+            self.__pts += 1000
             return 3
         else:
             return 2
