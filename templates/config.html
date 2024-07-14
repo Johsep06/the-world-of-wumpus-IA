@@ -18,7 +18,7 @@
             <div  class="chartdiv op-1">
                 <div id="chartdiv"></div>
             </div>
-            <h3>total de jogos:</h3>
+            <h3>total de jogos: {{ qtd }}</h3>
         </div>
         <div class="container-config back-b">
             <h1> Segundo Agente </h1>
@@ -42,7 +42,7 @@
             <label class="back-b size-input-text"> 
                 <strong> Tamanho </strong>
             </label>
-            <input type="range" id="size" name="size" min="4" max="10" class="back-b" value="4">
+            <input type="range" id="size" name="size" min="4" max="20" class="back-b" value="4">
             <span id="size-value">4</span>
         </div>
     </footer>
@@ -83,13 +83,13 @@
         // Set data
         series.data.setAll([
             { 
-                value: 2, 
+                value: +"{{ vit }}", 
                 category: "Vitórias" ,
                 sliceSettings: {
                     fill: am5.color(0xffffff),
                 }
             }, { 
-                value: 10, 
+                value: +"{{ qtd - vit }}", 
                 category: "Derrotas",
                 sliceSettings: {
                     fill: am5.color(0xffffff),

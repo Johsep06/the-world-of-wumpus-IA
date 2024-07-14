@@ -23,5 +23,16 @@
 </div>
 <div class="pts back-b lateral"> Pontuação <br> {{ pts }}</div>
 <div id="prompt" class="back-b lateral">
-    {{ status }}
+    {% if 'v' in percepcao %}
+        <h5>Você sentiu uma leve brisa.</h5>
+    {% endif %}
+    {% if 'f' in percepcao %}
+        <h5>Você sentiu um estranho fedor.</h5>
+    {% endif %}
+    {% if 'b' in percepcao %}
+        <h5>Você viu um brilho estranho.</h5>
+    {% endif %}
+    {% if '' == percepcao %}
+        <h5>Tudo parece normal.</h5>
+    {% endif %}
 </div>

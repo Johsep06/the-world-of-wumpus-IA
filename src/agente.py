@@ -9,9 +9,19 @@ class Agente(object):
 
     def __init__(self, board: Ambiente, tipo_agente:int=0) -> None:
         self.__board = board
-        self.__board.setAgente(self.__pos['x'], self.__pos['y'])
+        self.__board.setAgente(0, 0)
+        self.__pos['x'] = 0
+        self.__pos['y'] = 0
         self.__status['tamanho_mapa'] = len(board)
         self.__status['tipo_agente'] = tipo_agente
+        self.__status['wumpus'] = 'v'
+        self.__status['historico'] = ''
+        self.__status['n_passos'] = 0
+        self.__status['percepcao'] = ''
+        self.__status['status_partida'] = 'n'
+        self.__pts = 0
+        self.__bag = []
+        self.__flecha = 1
     
     def getPts(self) -> int:
         return self.__pts

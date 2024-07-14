@@ -34,6 +34,5 @@ def status():
                            passos=status['n_passos'],
                            percepcao=status['percepcao'],
                            flecha=status['flecha'],
-                           bag=len(status['bag']),
-                           status=status['percepcao']
+                           bag=len(status['bag'])
                            )

@@ -10,7 +10,7 @@ class Jogo(Model):
     pts = IntegerField()
     tamanho_mapa = IntegerField()
     tipo_agente = IntegerField()
-    bag = CharField()
+    bag = IntegerField()
     flechas = IntegerField()
 
     class Meta:

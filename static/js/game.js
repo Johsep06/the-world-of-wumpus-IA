@@ -3,21 +3,6 @@ const play = document.getElementById('play');
 let isPlaying = false;
 let intervalID = null;
 
-function playButton(){
-    if (!isPlaying){
-        play.querySelector('.bi').classList.remove('bi-play-fill');
-        play.querySelector('.bi').classList.add('bi-pause-fill');
-        intervalID = setInterval(render_container, 1000, '/board/update');
-        isPlaying = true;
-    } else {
-        play.querySelector('.bi').classList.remove('bi-pause-fill');
-        play.querySelector('.bi').classList.add('bi-play-fill');
-        clearInterval(intervalID);
-        isPlaying = false;
-    }
-}
-
-
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -39,10 +24,30 @@ function render_container(route, container) {
         });
 }
 
-render_container("/board/", 'map');
-render_container('/board/status', 'status')
-document.getElementById('new-game').addEventListener('click', () => {
+function load(){
     render_container("/board/", 'map');
     render_container('/board/status', 'status')
-    // clearInterval(intervalID);
+}
+
+function update(){
+    render_container("/board/update", "map")
+    render_container('/board/status', 'status')
+}
+
+function playButton(){
+    if (!isPlaying){
+        play.querySelector('.bi').classList.remove('bi-play-fill');
+        play.querySelector('.bi').classList.add('bi-pause-fill');
+        intervalID = setInterval(update, 1000);
+        isPlaying = true;
+    } else {
+        play.querySelector('.bi').classList.remove('bi-pause-fill');
+        play.querySelector('.bi').classList.add('bi-play-fill');
+        clearInterval(intervalID);
+        isPlaying = false;
+    }
+}
+
+document.getElementById('new-game').addEventListener('click', () => {
+    load();
 });

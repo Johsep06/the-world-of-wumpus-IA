@@ -74,7 +74,7 @@ class Ambiente(object):
             for i in range(self.__size):
                 for j in range(self.__size):
                     if self.__board[i][j].getValue() == 'A':
-                        if self.__board[i][j].getObjeto() in ['O', '']:
+                        if self.__board[i][j].getObjeto() in ['S', '']:
                             self.__board[i][j].setOut(0)
                         else:
                             self.__board[i][j].setOut(1)
@@ -144,7 +144,7 @@ class Ambiente(object):
 
     def killWumpus(self, posX:int, posY:int) -> bool:
         if self.__board[posY][posX].getObjeto() == 'W':
-            self.__board[posY][posX].setObjeto('')
+            self.__board[posY][posX].setObjeto(' ')
             return True
         else: return False
 
