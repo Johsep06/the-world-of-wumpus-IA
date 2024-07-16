@@ -1,10 +1,17 @@
 const play = document.getElementById('play');
+const rangeInput = document.getElementById('size');
+const rangeValue = document.getElementById('size-value');
+const map = document.getElementById('map');
 
 let isPlaying = false;
 let intervalID = null;
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function load(){
+    size = rangeInput.value;
+    map.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    map.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    render_container("/game/load-board", 'map');
+    render_container('/game/status', 'status')
 }
 
 function render_container(route, container) {
@@ -24,14 +31,9 @@ function render_container(route, container) {
         });
 }
 
-function load(){
-    render_container("/board/", 'map');
-    render_container('/board/status', 'status')
-}
-
 function update(){
-    render_container("/board/update", "map")
-    render_container('/board/status', 'status')
+    render_container("/game/update-board", "map")
+    render_container('/game/status', 'status')
 }
 
 function playButton(){
@@ -48,6 +50,34 @@ function playButton(){
     }
 }
 
+function updateRangeValue() {
+    rangeValue.textContent = rangeInput.value;
+}
+
+// rangeInput.addEventListener('input', updateRangeValue);
+
 document.getElementById('new-game').addEventListener('click', () => {
     load();
 });
+
+
+
+
+function loadSize() {
+    const valor = rangeInput.value;
+    
+    fetch('/game/set-size', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ value: valor }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}

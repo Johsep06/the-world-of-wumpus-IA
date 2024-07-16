@@ -10,19 +10,34 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
   </head>
   <body class="back-grad">
-    <div class="container" id="map"></div>
+    <div class="container-map">
+      <div id="map"></div>
+    </div>
     <div class="container" id="statistics">
       <div id="status"></div>
-      <div id="buttons" class="back-b">
-        <button class="back-b back-grad button op-1" id="new-game" onclick="render_container('/board/')"> new </button>
-        <button id="play" class=" back-grad button op-1" onclick="playButton()">
-          <i class="bi bi-play-fill"></i>
-        </button>
+      <div id="inputs" class="back-b">
+        <div id="buttons">
+          <button class="back-b back-grad button op-1" id="new-game" onclick="render_container('/game/load-board')"> new </button>
+          <button id="play" class=" back-grad button op-1" onclick="playButton()">
+            <i class="bi bi-play-fill"></i>
+          </button>
+        </div>
+        <div id="range">
+          <div class="input-group size-input">
+            <label class="back-b size-input-text"> 
+                <strong> Tamanho </strong>
+            </label>
+            <input type="range" id="size" class="back-b"
+            name="size" min="4" max="20"  value="4" 
+            onchange="updateRangeValue(); loadSize()">
+            <span id="size-value">4</span>
+        </div>
       </div>
     </div>
     <script src="{{ url_for('static', filename='js/game.js') }}"></script>
     <script>
       load();
+      updateRangeValue();
     </script>
   </body>
 </html>

@@ -21,18 +21,26 @@
     </div>
     <div class="text">: {{ passos }}</div>
 </div>
-<div class="pts back-b lateral"> Pontuação <br> {{ pts }}</div>
+<div class="pts back-b lateral"> Pontuação: {{ pts }}</div>
 <div id="prompt" class="back-b lateral">
-    {% if 'v' in percepcao %}
-        <h5>Você sentiu uma leve brisa.</h5>
-    {% endif %}
-    {% if 'f' in percepcao %}
-        <h5>Você sentiu um estranho fedor.</h5>
-    {% endif %}
-    {% if 'b' in percepcao %}
-        <h5>Você viu um brilho estranho.</h5>
-    {% endif %}
-    {% if '' == percepcao %}
-        <h5>Tudo parece normal.</h5>
+    {% if status == 'v' %}
+        <h5>!!!!! Você Venceu !!!!!</h5>
+    {% elif status == 'w' %}
+        <h5>!!!!! Você foi devorado pelo Wumpus !!!!!</h5>
+    {% elif status == 'p' %}
+        <h5>!!!!! Você caiu no Poço !!!!!</h5>
+    {% else %}
+        {% if 'v' in percepcao %}
+            <h6>Você sentiu uma leve brisa.</h6>
+        {% endif %}
+        {% if 'f' in percepcao %}
+            <h6>Você sentiu um estranho fedor.</h6>
+        {% endif %}
+        {% if 'b' in percepcao %}
+            <h6>Você viu um brilho estranho.</h6>
+        {% endif %}
+        {% if '' == percepcao %}
+            <h5>Tudo parece normal.</h5>
+        {% endif %}
     {% endif %}
 </div>

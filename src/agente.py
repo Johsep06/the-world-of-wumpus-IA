@@ -17,7 +17,7 @@ class Agente(object):
         self.__status['wumpus'] = 'v'
         self.__status['historico'] = ''
         self.__status['n_passos'] = 0
-        self.__status['percepcao'] = ''
+        self.__status['percepcao'] = self.__board.get_percepcao(0, 0)
         self.__status['status_partida'] = 'n'
         self.__pts = 0
         self.__bag = []

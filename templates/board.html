@@ -1,5 +1,5 @@
 {% for i in range(size) %}
-    <div class="row">
+    <!-- <div class="row"> -->
         {% for j in range(size) %}
             <div id="cell-{{ i }}-{{ j }}"
             {% if 'b' in map[i][j] %}
@@ -29,5 +29,5 @@
 
             </div>
         {% endfor %}
-    </div>
+    <!-- </div> -->
 {% endfor %}

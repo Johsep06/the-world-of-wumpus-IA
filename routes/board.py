@@ -7,7 +7,7 @@ jogo = Game()
 
 @board_route.route('/')
 def create_board():
-    jogo.new_game(4, 1)
+    jogo.new_game(5, 1)
 
     return render_template('board.html', 
                            board=jogo.tabuleiro(), 
@@ -34,5 +34,6 @@ def status():
                            passos=status['n_passos'],
                            percepcao=status['percepcao'],
                            flecha=status['flecha'],
-                           bag=len(status['bag'])
+                           bag=len(status['bag']),
+                           status=status['status_partida']
                            )
