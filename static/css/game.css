@@ -22,59 +22,6 @@ body {
     color: white;
 }
 
-#map {
-    height: 100vh;
-    width: 100vh;
-    display: grid;
-}
-
-.cell {
-    box-sizing: border-box;
-    margin: 1px;
-    border-radius: 10px;
-}
-
-img {
-    height: 95%;
-    width: 95%;
-}
-
-#agente {
-    background-size: cover;
-    background-position: center;
-}
-
-#wumpus {
-    background-size: cover;
-    background-position: center;
-}
-
-#poco {
-    background-size: cover;
-    background-position: center;
-}
-
-#gold {
-    background-size: cover;
-    background-position: center;
-}
-
-.commun-cell {
-    border: 2px solid #fff;
-}
-
-.smelly-cell {
-    border: 2px solid green;
-}
-
-.breeze-cell {
-    border: 2px solid lightseagreen;
-}
-
-.shinny-cell {
-    border: 2px solid gold;
-}
-
 .button {
     height: 50px;
     width: 50px;

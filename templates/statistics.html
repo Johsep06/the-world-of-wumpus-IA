@@ -1,27 +1,18 @@
-<!--
-    n_passos
-    percepcao
-    percepcao
--->
-
-<!-- <div id="pts" class="back-b lateral">Pontos: {{ pts }}</div>
-<div class="prompt back-b lateral">{{ percepcao }}</div> -->
-
 <div class="contador back-b lateral">
     <div class="icon">
         <img src="{{url_for('static', filename='assets/flecha.png')}}" alt="">
     </div>
-    <div class="text">: {{ flecha }}</div>
+    <div class="text">: {{ flecha }} </div>
     <div class="icon">
         <img src="{{url_for('static', filename='assets/ouro.png')}}" alt="">
     </div>
-    <div class="text">: {{ bag }}</div>
+    <div class="text">: {{ bag }} </div>
     <div class="icon">
         <img src="{{url_for('static', filename='assets/passos.png')}}" alt="">
     </div>
-    <div class="text">: {{ passos }}</div>
+    <div class="text">: {{ passos }} </div>
 </div>
-<div class="pts back-b lateral"> Pontuação: {{ pts }}</div>
+<div class="pts back-b lateral"> Pontuação: {{ pts }} </div>
 <div id="prompt" class="back-b lateral">
     {% if status == 'v' %}
         <h5>!!!!! Você Venceu !!!!!</h5>

@@ -9,4 +9,5 @@ app.register_blueprint(home_route)
 app.register_blueprint(config_route, url_prefix='/config')
 app.register_blueprint(game_route, url_prefix='/game')
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)

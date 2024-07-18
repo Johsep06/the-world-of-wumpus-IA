@@ -5,14 +5,7 @@ const map = document.getElementById('map');
 
 let isPlaying = false;
 let intervalID = null;
-
-function load(){
-    size = rangeInput.value;
-    map.style.gridTemplateRows = `repeat(${size}, 1fr)`;
-    map.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-    render_container("/game/load-board", 'map');
-    render_container('/game/status', 'status')
-}
+let statusGame = null;
 
 function render_container(route, container) {
     fetch(route)
@@ -30,38 +23,6 @@ function render_container(route, container) {
             console.error('Erro ao carregar conteúdo:', error);
         });
 }
-
-function update(){
-    render_container("/game/update-board", "map")
-    render_container('/game/status', 'status')
-}
-
-function playButton(){
-    if (!isPlaying){
-        play.querySelector('.bi').classList.remove('bi-play-fill');
-        play.querySelector('.bi').classList.add('bi-pause-fill');
-        intervalID = setInterval(update, 1000);
-        isPlaying = true;
-    } else {
-        play.querySelector('.bi').classList.remove('bi-pause-fill');
-        play.querySelector('.bi').classList.add('bi-play-fill');
-        clearInterval(intervalID);
-        isPlaying = false;
-    }
-}
-
-function updateRangeValue() {
-    rangeValue.textContent = rangeInput.value;
-}
-
-// rangeInput.addEventListener('input', updateRangeValue);
-
-document.getElementById('new-game').addEventListener('click', () => {
-    load();
-});
-
-
-
 
 function loadSize() {
     const valor = rangeInput.value;
@@ -81,3 +42,91 @@ function loadSize() {
         console.error('Error:', error);
     });
 }
+
+function removePlayButton(){
+    play.classList.add('none');
+}
+
+function retornPlayButton(){
+    try {
+        play.classList.remove('none');
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getStatus() {
+    try {
+        const response = await fetch('/game/status-game');
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        statusGame = data.status;
+    } catch (error) {
+        console.error('Error fetching variable:', error);
+    }
+}
+
+function load(){
+    size = rangeInput.value;
+    map.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    map.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    render_container("/game/load-board", 'map');
+    render_container('/game/relatorio', 'status')
+}
+
+function playGame(){
+    play.querySelector('.bi').classList.remove('bi-play-fill');
+    play.querySelector('.bi').classList.add('bi-pause-fill');
+    intervalID = setInterval(update, 1000);
+    isPlaying = true;
+}
+
+function pauseGame(){
+    play.querySelector('.bi').classList.remove('bi-pause-fill');
+    play.querySelector('.bi').classList.add('bi-play-fill');
+    clearInterval(intervalID);
+    isPlaying = false;
+}
+
+function playButton(){
+    if (!isPlaying){
+        playGame();
+    } else {
+        pauseGame();
+    }
+}
+
+function endGame(){
+    if(statusGame == 'w' || statusGame == 'p' || statusGame == 'v'){
+        console.log(statusGame);
+        pauseGame();
+        removePlayButton();
+    }
+}
+
+function newGame(){
+    pauseGame();
+    load();
+    retornPlayButton()
+}
+
+function update(){
+    setTimeout(render_container, 200, "/game/update-board", "map")
+    setTimeout(render_container, 400, '/game/relatorio', 'status')
+    setTimeout(getStatus, 600);
+    setTimeout(endGame, 800);
+    // render_container("/game/update-board", "map");
+    // render_container('/game/relatorio', 'status');
+    // getStatus();
+    // endGame();
+}
+
+function updateRangeValue() {
+    rangeValue.textContent = rangeInput.value;
+}
+
+load();

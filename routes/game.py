@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from src.app import Game
 
 game_route = Blueprint('game', __name__)
@@ -37,18 +37,28 @@ def update_board():
     return render_template('board.html', 
                            board=jogo.tabuleiro(), 
                            map=jogo.get_percepcoes(),
-                           size=len(jogo)
+                           size=len(jogo),
                         )
 
-@game_route.route('/status')
-def get_status():
-    status = jogo.get_relatorio()
+@game_route.route('/relatorio')
+def get_relatorio():
+    relatorio = jogo.get_relatorio()
 
     return render_template('statistics.html',
-                           pts=status['pts'],
-                           passos=status['n_passos'],
-                           percepcao=status['percepcao'],
-                           flecha=status['flecha'],
-                           bag=len(status['bag']),
-                           status=status['status_partida']
+                           pts=relatorio['pts'],
+                           passos=relatorio['n_passos'],
+                           percepcao=relatorio['percepcao'],
+                           flecha=relatorio['flecha'],
+                           bag=len(relatorio['bag']),
+                           status=relatorio['status_partida']
                            )
+
+@game_route.route('/status-game', methods=['GET'])
+def get_status():
+    status = jogo.get_relatorio()['status_partida']
+    return jsonify(status=status)
+
+# @game_route.route('/teste', methods=['GET'])
+# def teste():
+#     status = jogo.get_relatorio()
+#     return jsonify(status)
