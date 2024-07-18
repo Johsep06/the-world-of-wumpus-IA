@@ -5,13 +5,15 @@ db.connect()
 db.create_tables([Jogo])
 
 
-total_jogos = len(Jogo.select())
-vitorias = len(Jogo.select().where(Jogo.status_partida == 'v'))
+
 
 config_route = Blueprint('config', __name__)
 
 @config_route.route('/')
-def config(): 
+def config():
+    total_jogos = len(Jogo.select())
+    vitorias = len(Jogo.select().where(Jogo.status_partida == 'v'))
+    
     return render_template('config.html', qtd=total_jogos, vit=vitorias)
 
 @config_route.route('/', methods=['POST'])

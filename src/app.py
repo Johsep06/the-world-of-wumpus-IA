@@ -1,5 +1,6 @@
-from src.ambiente import Ambiente
 from src.agente import Agente
+from src.ambiente import Ambiente
+from database.database import db, Jogo
 from src.agente_aleatorio import AgenteAleatorio
 
 class Game(object):
@@ -53,9 +54,17 @@ class Game(object):
 
         return relatorio
 
-# def novo_jogo(size: int):
-#     global board
-#     pocos = int(size * size * (3/16))
+def save_game(relatorio:dict):
+    db.connect()
+    db.create_tables([Jogo])
 
-#     board = None
-#     board = Ambiente(size, pocos)
+    jogo = Jogo.create(n_passos=relatorio['n_passos'],
+                       status_partida=relatorio['status_partida'],
+                       historico=relatorio['historico'],
+                       status_wumpus=relatorio['wumpus'],
+                       pts=relatorio['pts'],
+                       tamanho_mapa=relatorio['tamanho_mapa'],
+                       tipo_agente=relatorio['tipo_agente'],
+                       bag=len(relatorio['bag']),
+                       flechas=relatorio['flecha']
+                       )

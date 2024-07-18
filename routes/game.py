@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from src.app import Game
+from src.app import Game, save_game
 
 game_route = Blueprint('game', __name__)
 
@@ -55,7 +55,12 @@ def get_relatorio():
 
 @game_route.route('/status-game', methods=['GET'])
 def get_status():
-    status = jogo.get_relatorio()['status_partida']
+    relatorio = jogo.get_relatorio() 
+    status = relatorio['status_partida']
+
+    if status in ['v', 'w', 'p']:
+        save_game(relatorio)
+
     return jsonify(status=status)
 
 # @game_route.route('/teste', methods=['GET'])
