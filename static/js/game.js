@@ -119,10 +119,6 @@ function update(){
     setTimeout(render_container, 400, '/game/relatorio', 'status')
     setTimeout(getStatus, 600);
     setTimeout(endGame, 800);
-    // render_container("/game/update-board", "map");
-    // render_container('/game/relatorio', 'status');
-    // getStatus();
-    // endGame();
 }
 
 function updateRangeValue() {

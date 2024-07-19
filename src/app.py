@@ -2,6 +2,7 @@ from src.agente import Agente
 from src.ambiente import Ambiente
 from database.database import db, Jogo
 from src.agente_aleatorio import AgenteAleatorio
+from src.agente_reativo_2 import AgenteReativo2
 
 class Game(object):
     def __init__(self) -> None:
@@ -33,6 +34,10 @@ class Game(object):
         #     self.__ia = AgenteReativo(self.__board)
         # elif agente == 3:
         #     self.__ia = AgenteAprendizagem(self.__board)
+        elif agente == 2:
+            self.__ia = AgenteReativo2(self.__board)
+
+
         else:
             raise ValueError("Tipo de agente inválido. Use 1 (Aleatório), 2 (Reativo) ou 3 (Aprendizagem).")
         

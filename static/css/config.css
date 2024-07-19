@@ -22,7 +22,7 @@ main {
     padding-top: 5vh;
 }
 
-.chartdiv {
+.chartdiv-class {
     height: 100px;
     width: 150px;
     display: grid;

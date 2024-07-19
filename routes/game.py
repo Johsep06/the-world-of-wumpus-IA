@@ -1,11 +1,19 @@
 from flask import Blueprint, render_template, request, jsonify
 from src.app import Game, save_game
+from src.dados import desserializar
 
 game_route = Blueprint('game', __name__)
 
+agente_id = 1
+try:
+    agente_id = desserializar('./database/agente.bin')
+except Exception as e:
+    print('erro na seleção de agentes\n' + e)
+    agente_id = 1
+
 size = 4
 jogo = Game()
-jogo.new_game(4,1)
+jogo.new_game(4,agente_id)
 
 @game_route.route('/')
 def home():
@@ -17,11 +25,13 @@ def set_size():
     
     data = request.get_json()
     size = int(data.get('value'))
+    return jsonify({'success': True}), 200
+
     
 
 @game_route.route('/load-board')
 def load_board():
-    jogo.new_game(size, 1)
+    jogo.new_game(size, agente_id)
 
     
     return render_template('board.html', 

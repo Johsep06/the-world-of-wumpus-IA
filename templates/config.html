@@ -12,21 +12,23 @@
   <body class="back-grad">
     <main>
         <div class="container-config back-b">
-            <h1 class="op-1">Primeiro Agente</h1>
-            <div class="play back-grad op-1" onclick="change_page({{ url_for('game.home') }})">
+            <h1 class="op-1"> Primeiro Agente </h1>
+            <div class="play back-grad op-1" onclick="playGame(1)">
                 <strong> play </strong>
             </div>
-            <div  class="chartdiv op-1">
+            <div  class="chartdiv-class op-1">
                 <div id="chartdiv"></div>
             </div>
             <h3>total de jogos: {{ qtd }}</h3>
         </div>
         <div class="container-config back-b">
-            <h1> Segundo Agente </h1>
-            <div class="play text-decoration-line-through">
+            <h1 class="op-1"> Segundo Agente </h1>
+            <div class="play back-grad op-1" onclick="playGame(2)">
                 <strong> play </strong>
             </div>
-            <div class="chartdiv"></div>
+            <div  class="chartdiv-class op-1">
+                <div id="chartdiv2"></div>
+            </div>
             <h3>total de jogos:</h3>
         </div>
         <div class="container-config back-b">
@@ -34,7 +36,9 @@
             <div class="play text-decoration-line-through">
                 <strong> play </strong>
             </div>
-            <div class="chartdiv"></div>
+            <div  class="chartdiv-class op-1">
+                <div id="chartdiv3"></div>
+            </div>
             <h3>total de jogos:</h3>
         </div>
     </main>
@@ -43,54 +47,29 @@
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <script src="{{ url_for('static', filename='js/script.js')  }}"></script>
+    <script src="{{ url_for('static', filename='js/pie-chart.js')  }}"></script>
     <script src="{{ url_for('static', filename='js/config.js')  }}"></script>
     <script>
-        am5.ready(function() {
-        var root = am5.Root.new("chartdiv");
-        root.setThemes([
-          am5themes_Animated.new(root)
-        ]);
-        var chart = root.container.children.push(am5percent.PieChart.new(root, {
-          layout: root.verticalLayout
-        }));
-        
-        var series = chart.series.push(am5percent.PieSeries.new(root, {
-          valueField: "value",
-          categoryField: "category"
-        }));
+        function playGame(agenteID){
+            setInterval(setAgente, 100, agenteID);
+            setInterval(change_page, 200, "{{ url_for('game.home') }}");
+            // setAgente(agenteID);
+            // change_page("{{ url_for('game.home') }}");
+        }
 
-        series.slices.template.setAll({
-            fillOpacity: 1,
-            stroke: am5.color(0x000000),
-            strokeWidth: 1
-        });
+        loadGraphic("chartdiv", "{{ vit }}", "{{ qtd - vit }}");
+        // createChart("chartdiv2", 10, 5);
 
-        series.get("colors").set("colors", [
-            am5.color(0xa02a89),
-            am5.color(0x6a1c71),
-        ]);
-        series.ticks.template.set("visible", false);
-        series.labels.template.set("forceHidden", true);
-        
-        // Set data
-        series.data.setAll([
-            { 
-                value: +"{{ vit }}", 
-                category: "Vitórias" ,
-                sliceSettings: {
-                    fill: am5.color(0xffffff),
-                }
-            }, { 
-                value: +"{{ qtd - vit }}", 
-                category: "Derrotas",
-                sliceSettings: {
-                    fill: am5.color(0xffffff),
-                }
-            }
-        ]);
+        // var chartsData = [
+        //     { id: "chartdiv", vitorias: 10, derrotas: 5 },
+        //     { id: "chartdiv2", vitorias: 7, derrotas: 8 },
+        //     { id: "chartdiv3", vitorias: 12, derrotas: 3 }
+        // ];
 
-        series.appear(1000, 100);
-        }); // end am5.ready()
+        // chartsData.forEach(function(chartData){
+        //     am5.ready(loadGraphic(chartData.id, chartData.vitorias, chartData.derrotas));
+
+        // })
     </script>
   </body>
 </html>
