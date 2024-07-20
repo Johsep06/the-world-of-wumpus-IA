@@ -29,7 +29,7 @@ main {
     place-items: center;
 }
 
-#chartdiv {
+.chartdiv {
     height: 100px;
     width: 150px;
 }

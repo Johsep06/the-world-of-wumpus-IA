@@ -9,10 +9,15 @@ config_route = Blueprint('config', __name__)
 
 @config_route.route('/')
 def config():
-    total_jogos = len(Jogo.select())
-    vitorias = len(Jogo.select().where(Jogo.status_partida == 'v'))
+    ag1_jogos = len(Jogo.select().where(Jogo.tipo_agente == 1))
+    ag1_vit = len(Jogo.select().where(Jogo.tipo_agente == 1, Jogo.status_partida == 'v'))
+
+    ag2_jogos = len(Jogo.select().where(Jogo.tipo_agente == 2))
+    ag2_vit = len(Jogo.select().where(Jogo.tipo_agente == 2, Jogo.status_partida == 'v'))
     
-    return render_template('config.html', qtd=total_jogos, vit=vitorias)
+    return render_template('config.html', 
+                           ag1Qtd=ag1_jogos, Ag1Vit=ag1_vit,
+                           ag2Qtd=ag2_jogos, Ag2Vit=ag2_vit)
 
 @config_route.route('/set-agente', methods=['POST'])
 def set_agente():

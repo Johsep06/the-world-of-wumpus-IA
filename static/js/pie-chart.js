@@ -1,6 +1,6 @@
  // end am5.ready()
 
-function loadGraphic(id, vitorias, derrotas) {
+function loadGraphic(id, data) {
     var root = am5.Root.new(id);
     root.setThemes([
       am5themes_Animated.new(root)
@@ -29,34 +29,20 @@ function loadGraphic(id, vitorias, derrotas) {
     series.labels.template.set("forceHidden", true);
     
     // Set data
-    series.data.setAll([
-        { 
-            value: +vitorias, 
-            category: "Vitórias" ,
-            sliceSettings: {
-                fill: am5.color(0xffffff),
-            }
-        }, { 
-            value: +derrotas, 
-            category: "Derrotas",
-            sliceSettings: {
-                fill: am5.color(0xffffff),
-            }
-        }
-    ]);
+    series.data.setAll(data);
 
     series.appear(1000, 100);
 }
 
-function createChart(id, vitorias, derrotas) {
-    var root2 = am5.Root.new(id);
-    root2.setThemes([am5themes_Animated.new(root2)]);
+function createChart(id, data) {
+    const root = am5.Root.new(id);
+    root.setThemes([am5themes_Animated.new(root)]);
 
-    var chart = root2.container.children.push(am5percent.PieChart.new(root2, {
-        layout: root2.verticalLayout
+    const chart = root.container.children.push(am5percent.PieChart.new(root, {
+        layout: root.verticalLayout
     }));
 
-    var series = chart.series.push(am5percent.PieSeries.new(root2, {
+    const series = chart.series.push(am5percent.PieSeries.new(root, {
         valueField: "value",
         categoryField: "category"
     }));
@@ -75,21 +61,7 @@ function createChart(id, vitorias, derrotas) {
     series.ticks.template.set("visible", false);
     series.labels.template.set("forceHidden", true);
 
-    series.data.setAll([
-        { 
-            value: +vitorias, 
-            category: "Vitórias" ,
-            sliceSettings: {
-                fill: am5.color(0xffffff),
-            }
-        }, { 
-            value: +derrotas, 
-            category: "Derrotas",
-            sliceSettings: {
-                fill: am5.color(0xffffff),
-            }
-        }
-    ]);
+    series.data.setAll(data);
 
     series.appear(1000, 100);
 }
