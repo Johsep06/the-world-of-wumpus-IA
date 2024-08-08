@@ -1,3 +1,5 @@
+from random import choice, randrange, shuffle
+
 class Memory(object):
     def __init__(self, size: int) -> None:
         self.__size = size
@@ -6,7 +8,8 @@ class Memory(object):
             'S':'d',
             'L':'d',
             'O':'d',
-            'C':'d'
+            'C':'d',
+            'V': 0
         }
 
         self.__memory = [
@@ -23,8 +26,19 @@ class Memory(object):
                 out += f'{i, j} | {cel}.\n' #str(cel) + '\n'
             out += '\n'
         
-        return out
+        return out 
     
+    def exibir(self) -> str:
+        out = ''
+        for line in self.__memory:
+            out_aux = []
+            for celula in line:
+                if celula['C'] == 'd': out_aux.append(' ')
+                elif celula['C'] == 'c': out_aux.append('-')
+                else: out_aux.append(celula['C'])
+            out += ' | '.join(out_aux) + '\n'
+        return out
+
     def __bordas(self):
         for i in range(self.__size):
             self.__memory[0][i]['N'] = ' '
@@ -33,20 +47,66 @@ class Memory(object):
             self.__memory[i][self.__size - 1]['L'] = ' '
 
     
-    def set_info(self, pos_i:int, pos_j:int, dado:str):
-        self.__memory[pos_i][pos_j]['C'] = dado
+    def set_info(self, pos_i:int, pos_j:int, dado:str, in_center:bool=True):
+        if in_center: self.__memory[pos_i][pos_j]['C'] = dado
 
-        if pos_i > 0:
+        if self.__memory[pos_i][pos_j]['N'] != ' ':
             self.__memory[pos_i - 1][pos_j]['S'] = dado
 
-        if pos_i < self.__size - 1:
+        if self.__memory[pos_i][pos_j]['S'] != ' ':
             self.__memory[pos_i + 1][pos_j]['N'] = dado
 
-        if pos_j > 0:
+        if self.__memory[pos_i][pos_j]['O'] != ' ':
             self.__memory[pos_i][pos_j - 1]['L'] = dado
 
-        if pos_j < self.__size - 1:
+        if self.__memory[pos_i][pos_j]['L'] != ' ':
             self.__memory[pos_i][pos_j + 1]['O'] = dado
+    
+    def del_info(self, pos_i:int, pos_j:int, dado:str):
+        if dado in self.__memory[pos_i][pos_j]['C']:
+            celula = self.__memory[pos_i][pos_j]
+
+            aux = [s for s in celula['C']]
+            aux.pop(celula['C'].index(dado))
+            celula['C'] = ''.join(aux)
+
+            self.__memory[pos_i][pos_j] = celula
+
+        if dado in self.__memory[pos_i][pos_j]['N']:
+            celula = self.__memory[pos_i - 1][pos_j]
+
+            aux = [s for s in celula['S']]
+            aux.pop(celula['S'].index(dado))
+            celula['S'] = ''.join(aux)
+
+            self.__memory[pos_i - 1][pos_j] = celula
+
+        if dado in self.__memory[pos_i][pos_j]['S']:
+            celula = self.__memory[pos_i + 1][pos_j]
+            
+            aux = [s for s in celula['N']]
+            aux.pop(celula['N'].index(dado))
+            celula['N'] = ''.join(aux)
+
+            self.__memory[pos_i + 1][pos_j] = celula
+
+        if dado in self.__memory[pos_i][pos_j]['O']:
+            celula = self.__memory[pos_i][pos_j - 1]
+            
+            aux = [s for s in celula['L']]
+            aux.pop(celula['L'].index(dado))
+            celula['L'] = ''.join(aux)
+
+            self.__memory[pos_i][pos_j - 1] = celula
+
+        if dado in self.__memory[pos_i][pos_j]['L']:
+            celula = self.__memory[pos_i][pos_j + 1]
+            
+            aux = [s for s in celula['O']]
+            aux.pop(celula['O'].index(dado))
+            celula['O'] = ''.join(aux)
+
+            self.__memory[pos_i][pos_j + 1] = celula
 
     def set_anterior(self, pos_i:int, pos_j:int, dado:str, direcao:str):
         if direcao == 'N':
@@ -63,22 +123,14 @@ class Memory(object):
 
     def explorar(self, pos_i:int, pos_j:int, historico:str, flechas:int, w:str):
         celula = self.__memory[pos_i][pos_j]
-        direcoes = 'SLON'
+        direcoes = ['S', 'L', 'N', 'O']
         moves = ''
 
         for i in direcoes:
             moves += celula[i]
         
-        # if len(historico) > 10:
-        #     if 'NS'*5 == historico[-10:] or 'LO'*5 == historico[-10:]:
-        #         result = -1
-        #         for i in range(4):
-        #             result += 1
-        #             if moves[result] != ' ' and moves[result] != 'S':
-        #                 break
-        #         return direcoes[result]
 
-        if moves.count('f') == 2 and w == 'v':
+        if moves.count('f') == 2: #? não lembro pq fiz esta linha:  and w == 'v'
             if 'f' in celula['N']:
                 if 'f' in celula['L']:
                     self.set_info(pos_i - 1, pos_j + 1, 'W')
@@ -90,80 +142,171 @@ class Memory(object):
                 else:
                     self.set_info(pos_i + 1, pos_j - 1, 'W')
 
-        if 'W' in moves and flechas != 0:
-            if 'W' in celula['N']:
-                if 'W' in celula['L']:
-                    self.set_info(pos_i - 1, pos_j + 1, 'c')
-                else:
-                    self.set_info(pos_i - 1, pos_j - 1, 'c')
+        if moves.count('v') == 2:
+            if 'v' in celula['N'] and 'v' in celula['S'] or 'v' in celula['L'] and 'v' in celula['O']:
+                pass
             else:
-                if 'W' in celula['L']:
-                    self.set_info(pos_i + 1, pos_j + 1, 'c')
+                if 'v' in celula['N']:
+                    if 'v' in celula['L']:
+                        self.set_info(pos_i - 1, pos_j + 1, 'P')
+                    else:
+                        self.set_info(pos_i - 1, pos_j - 1, 'P')
                 else:
-                    self.set_info(pos_i + 1, pos_j - 1, 'c')
+                    if 'v' in celula['L']:
+                        self.set_info(pos_i + 1, pos_j + 1, 'P')
+                    else:
+                        self.set_info(pos_i + 1, pos_j - 1, 'P')
+                
 
-            return direcoes[moves.find('W')].lower()
+        # if moves.count('v') >= 2 and 'vv' in moves:
+        #     pos_v = moves.index('vv')
+
+        #     if moves.count('v') == 3:
+        #         self.set_info(pos_i, pos_j)
 
 
-        elif 'c' in celula['C']:
+        # if 'W' in moves and flechas != 0:
+        #     move = direcoes[moves.find('W')]
+
+        #     if move == 'N':
+        #         self.del_info(pos_i - 1, pos_j, 'W')
+
+        #     elif move == 'S':
+        #         self.del_info(pos_i + 1, pos_j, 'W')
+
+        #     elif move == 'L':
+        #         self.del_info(pos_i, pos_j + 1, 'W')
+
+        #     elif move == 'O':
+        #         self.del_info(pos_i, pos_j - 1, 'W')
+
+        #     return move.lower()
+
+        if 'c' in celula['C']:
             if 'd' in moves:
-                return direcoes[moves.find('d')]
-            elif 'f' in moves:
-                return direcoes[moves.find('f')]
-            elif 'c' in moves:
-                return direcoes[moves.find('c')]
-            elif 'S' in moves:
-                return direcoes[moves.find('S')]
-            else:
-                result = -1
                 for i in range(4):
-                    result += 1
-                    if moves[result] != ' ':
-                        break
-                return direcoes[result]
+                    if 'd' in celula[direcoes[i]]:
+                        return direcoes[i]
+                    
+            elif 'S' in moves:
+                aux_direcoes = 'NOSL'
+                for i in range(4):
+                    if 'S' in celula[aux_direcoes[i]]:
+                        return aux_direcoes[i]
+            
+            elif 'c' in moves:
+                for i in range(4):
+                    if 'c' in celula[direcoes[i]]:
+                        return direcoes[i]
+
+            elif 'f' in moves or 'v' in moves:
+                for i in range(4):
+                    if 'f' in celula[direcoes[i]] or 'v' in celula[direcoes[i]]:
+                        return direcoes[i]
+            # else:
+            #     result = -1
+            #     for i in range(4):
+            #         result += 1
+            #         if moves[result] != ' ':
+            #             break
+            #     return direcoes[result]
             
         elif 'f' in celula['C']:
             if 'S' in moves and w == 'v':
-                return direcoes[moves.find('S')]
-            elif 'c' in moves and w == 'v':
-                return direcoes[moves.find('c')]
-            elif 'd' in moves:
-                return direcoes[moves.find('d')]
-            else:
-                result = -1
+                aux_direcoes = 'NOSL'
                 for i in range(4):
-                    result += 1
-                    if moves[result] != ' ':
-                        break
-                return direcoes[result]
+                    if 'S' in celula[aux_direcoes[i]]:
+                        return aux_direcoes[i]
+                    
+            elif 'c' in moves:
+                for i in range(4):
+                    if 'c' in celula[direcoes[i]]:
+                        return direcoes[i]
+                    
+            elif 'd' in moves:
+                for i in range(4):
+                    if 'd' in celula[direcoes[i]]:
+                        return direcoes[i]
+            # else:
+            #     result = -1
+            #     for i in range(4):
+            #         result += 1
+            #         if moves[result] != ' ':
+            #             break
+            #     return direcoes[result]
             
         elif 'v' in celula['C']:
-            if 'S' in moves:
-                return direcoes[moves.find('S')]
-            elif 'c' in moves:
-                return direcoes[moves.find('c')]
-            elif 'd' in moves:
-                return direcoes[moves.find('d')]
-            else:
-                result = -1
+            if 'P' in moves:
                 for i in range(4):
-                    result += 1
-                    if moves[result] != ' ':
-                        break
-                return direcoes[result]
+                    if not 'P' in celula[direcoes[i]]:
+                        return direcoes[i]
+                    
+            elif 'c' in moves:
+                for i in range(4):
+                    if 'c' in celula[direcoes[i]]:
+                        return direcoes[i]
+                    
+            elif 'S' in moves and w == 'v':
+                aux_direcoes = 'NOSL'
+                for i in range(4):
+                    if 'S' in celula[aux_direcoes[i]]:
+                        return aux_direcoes[i]
+                    
+            elif 'd' in moves:
+                for i in range(4):
+                    if 'd' in celula[direcoes[i]]:
+                        return direcoes[i]
+            # else:
+            #     result = -1
+            #     for i in range(4):
+            #         result += 1
+            #         if moves[result] != ' ':
+            #             break
+            #     return direcoes[result]
+
+            # else:
+
+
+
+            # if 'd' in moves:
+            #     d = -1
+            #     while True:
+            #         d = randrange(0 ,4)
+            #         if moves[d] == 'd' or moves[d] == 'c': break
+                
+            #     return direcoes[d]
+            # elif 'c' in moves:
+            #     d = -1
+            #     while True:
+            #         d = randrange(0 ,4)
+            #         if moves[d] == 'd' or moves[d] == 'c': break
+                
+            #     return direcoes[d]
+            # elif 'f' in moves:
+            #     return direcoes[moves.find('f')]
+            # elif 'S' in moves:
+            #     return direcoes[moves.find('S')]
+            # else:
+            #     move = ''
+            #     while True:
+            #         move = choice(direcoes)
+            #         if celula[move] != ' ': break
+            #     return move
 
 
             
-    def sair(self, pos_i:int, pos_j:int):
+    def sair(self, pos_i:int, pos_j:int,flechas:int):
         celula = self.__memory[pos_i][pos_j]
-        direcoes = 'NLSO'
+        direcoes = 'NOSL'
         moves = ''
 
         for i in direcoes:
             moves += celula[i]
+
+        if 'W' in moves and flechas != 0:
+            return direcoes[moves.find('W')].lower()
         
         if 'S' in moves:
-            print(moves)
             return direcoes[moves.find('S')]
         
         elif 'c' in moves:
@@ -178,10 +321,9 @@ class Memory(object):
         elif 'f' in moves:
             return direcoes[moves.find('f')]
         else:
-                result = -1
-                for i in range(4):
-                    result += 1
-                    if moves[result] != ' ':
-                        break
-                return direcoes[result]
+                move = ''
+                while True:
+                    move = choice(direcoes)
+                    if celula[move] != ' ': break
+                return move
         

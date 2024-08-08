@@ -4,12 +4,14 @@ from src.dados import desserializar
 
 game_route = Blueprint('game', __name__)
 
-agente_id = 1
-try:
-    agente_id = desserializar('./database/agente.bin')
-except Exception as e:
-    print('erro na seleção de agentes\n' + e)
-    agente_id = 1
+def get_agente():
+    try:
+        return int(desserializar('./database/agente.bin'))
+    except Exception as e:
+        print('erro na seleção de agentes\n' + e)
+        return 1
+
+agente_id = get_agente()
 
 size = 4
 jogo = Game()
@@ -31,6 +33,8 @@ def set_size():
 
 @game_route.route('/load-board')
 def load_board():
+    agente_id = get_agente()
+
     jogo.new_game(size, agente_id)
 
     
@@ -73,7 +77,7 @@ def get_status():
 
     return jsonify(status=status)
 
-# @game_route.route('/teste', methods=['GET'])
-# def teste():
-#     status = jogo.get_relatorio()
-#     return jsonify(status)
+@game_route.route('/teste', methods=['GET'])
+def teste():
+    status = jogo.get_relatorio()
+    return jsonify(status)

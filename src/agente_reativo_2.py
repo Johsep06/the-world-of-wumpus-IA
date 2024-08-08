@@ -21,7 +21,7 @@ class AgenteReativo2(Agente):
             self.__memory.set_info(pos_i, pos_j, status['percepcao'])
 
         if self.__voltar:
-            move = self.__memory.sair(pos_i, pos_j)
+            move = self.__memory.sair(pos_i, pos_j, self.get_flechas())
             self.acao(move)
 
         else:
@@ -34,8 +34,12 @@ class AgenteReativo2(Agente):
                 move = self.__memory.explorar(pos_i, pos_j, historico, self.get_flechas(), w)
 
                 if not('v' in  status['percepcao'] or 'f' in  status['percepcao']):
-                    self.__memory.set_anterior(pos_i, pos_j, 'S', move)
+                    self.__memory.set_info(pos_i, pos_j, 'S', in_center=False)
                 self.acao(move)
+
+        print('\n\n' + '-----'*5)
+        print(self.__memory.exibir())
+        print('\n\n' + '-----'*5)
                 
 
         

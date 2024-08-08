@@ -4,7 +4,7 @@ body {
 
 .container-map {
     height: 100vh;
-    width: 150vh;
+    width: 110vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +13,7 @@ body {
 
 #statistics {
     height: 100vh;
-    width: calc(100vw - 150vh);
+    width: calc(100vw - 110vh);
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,0 +1,12 @@
+body {
+    /* flex-direction: column; */
+    display: grid;
+    place-items: center;
+    height: 100%;
+}
+
+header {
+    height: 15vh;
+    width: 100vw;
+
+}

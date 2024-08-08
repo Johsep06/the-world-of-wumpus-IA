@@ -15,7 +15,9 @@
         <div class="button back-b op-1" onclick="change_page({{ url_for('config.config') }})">
             <strong> Iniciar </strong>
         </div>
-        <div class="button back-b text-decoration-line-through"> <strong> Estatísticas </strong> </div>
+        <div class="button back-b op-1" onclick="change_page({{ url_for('result.resultados') }})"> 
+          <strong> Estatísticas </strong>
+        </div>
     </div>
     <script src="{{ url_for('static', filename='js/script.js')  }}"></script>
   </body>
