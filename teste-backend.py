@@ -2,7 +2,7 @@ from time import sleep
 from src.agente import Agente
 from src.ambiente import Ambiente
 from src.agente_aleatorio import AgenteAleatorio
-from src.agente_reativo_2 import AgenteReativo2
+from agente_reativo import AgenteReativo2
 from src.memory import Memory
 from src.app import Game, save_game
 from database.database import db, Jogo
