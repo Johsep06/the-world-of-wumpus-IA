@@ -51,6 +51,9 @@ class Celula:
         return self.exibir
     
 if __name__ == '__main__':
+    '''
+    Teste de Funcionamento do Objeto
+    '''
     cell = Celula()
     cell.objeto = 'W'
     # cell.caminho = 'A'
