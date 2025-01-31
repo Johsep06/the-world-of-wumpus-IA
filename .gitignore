@@ -3,3 +3,4 @@ documentos/
 routes/__pycache__/
 *.pyc
 .venv
+db.*

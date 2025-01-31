@@ -26,7 +26,7 @@ class Ambiente:
         # Salva o tamanho do mundo no objeto.
         self.__size = size 
         
-        for i in range(poco_qtd): 
+        for i in range(size - 1): 
             # Define a posição aleatória do objeto Poço.
             pos = self.__set_object('P', 'b')
             self.__posicoes['P'].append(pos) 
@@ -45,7 +45,7 @@ class Ambiente:
         '''
         Função que permite a converção do objeto em string.
         '''
-        return self.get_world()
+        return self.show_world()
     
     def __len__(self): 
         '''
@@ -53,7 +53,15 @@ class Ambiente:
         '''
         return self.__size
     
-    def get_world(self) -> str:
+    def __to_dict(self) -> dict: 
+        dado = {
+            
+        }
+    
+    def get_word(self) -> list[Sala]:
+        return self.__mundo
+    
+    def show_world(self) -> str:
         ''' 
         Função que exibe o estado do mundo pela prioridade da sala.
         '''
@@ -66,7 +74,7 @@ class Ambiente:
 
         return saida
     
-    def get_percepcoes(self) -> str:
+    def show_percepcoes(self) -> str:
         ''' 
         Função que exibe asm percepções do mundo.
         '''
@@ -139,12 +147,10 @@ class Ambiente:
                 
                 return pos_i, pos_j
 
-
-    
-    
 if __name__ == '__main__': 
     # funçao de testes do objeto
-    mapa = Ambiente(3)
+    mapa = Ambiente(20)
+    # print((mapa.get_word()))
     print(mapa)
     print()
-    print(mapa.get_percepcoes())
+    print(mapa.show_percepcoes())
