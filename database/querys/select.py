@@ -1,0 +1,15 @@
+MUNDO = '''
+SELECT *
+FROM MUNDO;'''
+
+SALA = '''
+SELECT *
+FROM SALA;'''
+
+AGENTE = '''
+SELECT *
+FROM AGENTE;'''
+
+MUNDO_QTD = '''
+SELECT COUNT(ID)
+FROM MUNDO;'''

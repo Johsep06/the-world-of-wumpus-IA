@@ -56,6 +56,14 @@ class Sala:
     def __str__(self) -> str:
         return self.exibir
     
+    def to_dict(self) -> dict:
+        saida = {
+            'percepcao': self.percepcao,
+            'objeto': self.objeto
+        }
+        
+        return saida
+    
 if __name__ == '__main__':
     '''
     Teste de Funcionamento do Objeto
