@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-from querys import init, insert, select
+from database.querys import init, insert, select
 
 ROOT_DIR = Path(__file__).parent
 DB_NAME = 'db.sqlite3'
@@ -38,7 +38,19 @@ def get_mundo_qtd() -> int:
         connection.close()
         print('Conexão com o db encerrada.')
     
-    return mundo_qtd
+    return mundo_qtd[0]
+
+def add_mundo(mundo:dict):
+        try: 
+            connection = sqlite3.connect(DB_FILE)
+            cursor = connection.cursor()
+            cursor.execute(insert.MUNDO, mundo)
+            connection.commit()
+        except Exception as e:
+            print('Erro ao acessar o db', str(e))
+        finally: 
+            connection.close()
+            print('Conexão com o db encerrada.')
 
 if __name__ == '__main__':
     init_db()

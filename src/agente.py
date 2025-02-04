@@ -8,6 +8,7 @@ class Agente(ABC):
         self.final = 0
         self.__historico_passos = ''
         self.qtd_passos = 0
+        self.__flechas = 0
         
     @abstractmethod
     def set_tipo(self): ...

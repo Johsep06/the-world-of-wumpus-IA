@@ -1,35 +1,63 @@
 import random
 
-from sala import Sala
+from src.sala import Sala
+from database.database import get_mundo_qtd
 
 class Ambiente:
-    def __init__(self, size:int, wumpus_qtd:int=None, poco_qtd:int=None, gold_qtd:int=None):
+    def __init__(self):
         '''
         Objeto Ambiente será responsável guardar e processar os dados do mundo de wumpus.
+        '''
+        self.__mundo:list[list[Sala]] = None
+        self.__id:int = None
+        self.__size:int = None
+        self.__posicoes = {}
+
+    def __str__(self): 
+        '''
+        Função que permite a converção do objeto em string.
+        '''
+        return self.show_world()
+    
+    def __len__(self): 
+        '''
+        Função que permite a a leitua do tamanho do mundo pela a função len.
+        '''
+        return self.__size
+    
+    def new(self, size:int, wumpus_qtd:int=None, poco_qtd:int=None, gold_qtd:int=None):
+        '''
+        Cria um novo mundo apagando o antigo.
         - size:int = Tamanho do mundo, o mundo sempre será de tamanho quadrado.
         - wumpus_qtd:int é a quantidade de Wumpus no mundo.
         - poco_qtd:int = é a quantidade de Poços no mundo.
         - gold_qtd:int = é a quantidade de Ouro no mundo.
         '''
         
+        # Salva o tamanho do mundo na classe.
+        self.__size = size
+        
+        # Define o id do objeto
+        self.__id = get_mundo_qtd()
+        
         # Criação do mundo aplicado o objeto 'Sala' para cada posição.
         self.__mundo = [
-            [Sala() for j in range(size) ] for i in range(size)
+            [Sala() for j in range(self.__size) ] for i in range(self.__size)
         ]
         
         self.__mundo[0][0].objeto = 'S'
         
         if poco_qtd is None:
-            poco_qtd = size - 1
+            poco_qtd = self.__size - 1
             
         if gold_qtd is None:
-            gold_qtd = int(size / 6)
+            gold_qtd = int(self.__size / 6)
             
             if gold_qtd == 0:
                 gold_qtd = 1
         
         if wumpus_qtd is None:
-            wumpus_qtd = int(size / 5)
+            wumpus_qtd = int(self.__size / 5)
             
             if wumpus_qtd == 0:
                 wumpus_qtd = 1
@@ -39,12 +67,6 @@ class Ambiente:
             'W':[],
             'P':[]
         }
-
-        # Salva o tamanho do mundo no objeto.
-        self.__size = size 
-        
-        # Define o id do objeto
-        self._id = None
         
         for i in range(poco_qtd): 
             # Define a posição aleatória do objeto Poço.
@@ -60,19 +82,6 @@ class Ambiente:
             # Define a posição aleatória do objeto Ouro.
             pos = self.__set_gold() 
             self.__posicoes['O'].append(pos) 
-
-        
-    def __str__(self): 
-        '''
-        Função que permite a converção do objeto em string.
-        '''
-        return self.show_world()
-    
-    def __len__(self): 
-        '''
-        Função que permite a a leitua do tamanho do mundo pela a função len.
-        '''
-        return self.__size
     
     def __set_gold(self) -> tuple[int, int]:
         '''
@@ -142,6 +151,10 @@ class Ambiente:
                 return pos_i, pos_j
     
     def reload(self):
+        '''
+        Função que desfaz as alterações feitas por um agente no mundo.
+        '''
+        
         for key in self.__posicoes:
             for i,j in self.__posicoes[key]:
                 if key not in str(self.__mundo[i][j]):
@@ -153,9 +166,24 @@ class Ambiente:
         '''
         dado = {
             'size': self.__size,
-            'posicoes': self.__posicoes
+            'id': self.__id
         }
-    
+        
+        return dado
+
+    def salas_dict(self) -> list[dict]:
+        dados:list[dict] = []
+        
+        for i in range(self.__size):
+            for j in range(self.__size):
+                sala = self.__mundo[i][j].to_dict()
+                sala['mundo_id'] = self.__id
+                sala['pos_i'] = i
+                sala['pos_j'] = j
+                dados.append(sala)
+
+        return dados
+                   
     def get_word(self) -> list[Sala]:
         '''
         Retorna a matriz do mundo
@@ -193,10 +221,3 @@ class Ambiente:
         Retorna a percepçao de uma sala específica
         '''
         return self.__mundo[pos_i][pos_j].percepcao
-
-if __name__ == '__main__': 
-    # funçao de testes do objeto
-    mapa = Ambiente(5)
-    print(mapa)
-    print(mapa.reload())
-    print(mapa)

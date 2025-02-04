@@ -4,3 +4,4 @@ routes/__pycache__/
 *.pyc
 .venv
 db.*
+app.py
