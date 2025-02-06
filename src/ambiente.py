@@ -106,7 +106,7 @@ class Ambiente:
         self.__size = size
         
         # Define o id do objeto
-        self.__id = get_mundo_qtd()
+        self.__id = 15#get_mundo_qtd()
         
         # Criação do mundo aplicado o objeto 'Sala' para cada posição.
         self.__mundo = [
