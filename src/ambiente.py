@@ -106,7 +106,7 @@ class Ambiente:
         self.__size = size
         
         # Define o id do objeto
-        self.__id = 10#get_mundo_qtd()
+        self.__id = get_mundo_qtd()
         
         # Criação do mundo aplicado o objeto 'Sala' para cada posição.
         self.__mundo = [
@@ -151,7 +151,7 @@ class Ambiente:
             pos = self.__set_gold() 
             self.__posicoes['O'].append(pos) 
     
-    def load(self, size:int, id:int, salas:list[dict]):
+    def load(self, size:int, id:int, salas_dict:list[dict]):
         self.__size = size
         self.__id = id
         
@@ -160,9 +160,13 @@ class Ambiente:
                 None for _ in range(size)
             ] for _ in range(size)
         ]
-        for sala in salas:
-            i = sala['pos_i']
-            j = sala['pos_j']
+        for dado in salas_dict:
+            i = dado['pos_i']
+            j = dado['pos_j']
+
+            sala = Sala()
+            sala.objeto = dado['objeto']
+            sala.percepcao = dado['percepcao']
             
             self.__mundo[i][j] = sala
 

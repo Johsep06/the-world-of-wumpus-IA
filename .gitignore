@@ -5,3 +5,5 @@ routes/__pycache__/
 .venv
 db.*
 app.py
+aviso.*
+config_db.py
