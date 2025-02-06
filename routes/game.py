@@ -13,5 +13,5 @@ def game():
 
 @game_route.route('/world')
 def render_world():
-    mundo.new(10)
+    mundo.new(5)
     return render_template('board.html', size=len(mundo), world=mundo.get_word())
