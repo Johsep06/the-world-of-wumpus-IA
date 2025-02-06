@@ -52,6 +52,20 @@ def add_mundo(mundo:dict):
             connection.close()
             print('Conexão com o db encerrada.')
 
+def add_salas(salas:list[dict]):
+    try: 
+        connection = sqlite3.connect(DB_FILE)
+        cursor = connection.cursor()
+        
+        for sala in salas:
+            cursor.execute(insert.SALA, sala)
+            connection.commit()
+    except Exception as e:
+        print('Erro ao acessar o db', str(e))
+    finally: 
+        connection.close()
+        print('Conexão com o db encerrada.')
+
 if __name__ == '__main__':
     init_db()
     get_mundo_qtd()

@@ -7,14 +7,14 @@
 body {
     height: 100vh;
     width: 100vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
 }
 
 .back-grad {
     background-image: radial-gradient(circle at 90.56% 107.92%, #a02a89 0, #86247e 16.67%, #6a1c71 33.33%, #4e1460 50%, #330c4e 66.67%, #1c043e 83.33%, #0c0030 100%);
+}
+
+.background-img {
+    background-image: url('../assets/fundo.png');
 }
 
 .back-b {

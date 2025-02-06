@@ -4,7 +4,8 @@ FROM MUNDO;'''
 
 SALA = '''
 SELECT *
-FROM SALA;'''
+FROM SALA
+WHERE MUNDO_ID = :mundo_id;'''
 
 AGENTE = '''
 SELECT *

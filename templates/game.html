@@ -1,41 +1,27 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mundo de Wumpus</title>
-    <link rel="icon" href="{{ url_for('static', filename='assets/agente.png') }}" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
-  </head>
-  <body class="back-grad">
-    <div class="container-map">
-      <div id="map"></div>
-    </div>
-    <div class="container" id="statistics">
-      <div id="status"></div>
-      <div id="inputs" class="back-b">
-        <div id="buttons">
-          <button class="back-b back-grad button op-1" id="new-game" onclick="newGame()"> new </button>
-          <button id="play" class="back-grad button op-1" onclick="playButton()">
-            <i class="bi bi-play-fill"></i>
-          </button>
-        </div>
-        <div id="range">
-          <div class="input-group size-input">
-            <label class="back-b size-input-text"> 
-                <strong> Tamanho </strong>
-            </label>
-            <input type="range" id="size" class="back-b"
-            name="size" min="4" max="20"  value="4" 
-            onchange="updateRangeValue(); loadSize()">
-            <span id="size-value">4</span>
-        </div>
-      </div>
-    </div>
-    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mundo de Wumpus</title>
+  <link rel="icon" href="{{ url_for('static', filename='assets/creeper.png') }}" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/board.css') }}">
+</head>
+
+<body class="background-img">
+  <aside></aside>
+  <main id="world"></main>
+</body>
+
+<script src="{{ url_for('static', filename='js/script.js' )}}"></script>
+<script>
+  render_container('/game/world', 'world');
+</script>
+
 </html>

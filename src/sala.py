@@ -64,6 +64,10 @@ class Sala:
         
         return saida
     
+    def from_dict(self, sala:dict):
+        self.__objeto = sala['objeto']
+        self.__percepcao = sala['percpcao']
+    
 if __name__ == '__main__':
     '''
     Teste de Funcionamento do Objeto

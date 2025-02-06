@@ -12,6 +12,7 @@ class Ambiente:
         self.__id:int = None
         self.__size:int = None
         self.__posicoes = {}
+        self.__agents = []
 
     def __str__(self): 
         '''
@@ -24,6 +25,73 @@ class Ambiente:
         Função que permite a a leitua do tamanho do mundo pela a função len.
         '''
         return self.__size
+    
+    def __set_gold(self) -> tuple[int, int]:
+        '''
+        Função que cálcula a posição aleatória do ouro e sua percepção.
+        '''
+        while True:
+            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
+            pos_j = random.randint(0, self.__size - 1)# cálcula a posição j
+
+            # verifica se as posição cálculada é a inicial
+            e_posicao_inicial = pos_i == 0 and pos_j == 0
+
+            # verifica se as posição cálculada está sem Poço
+            sala_sem_poco = 'P' not in self.__mundo[pos_i][pos_j].objeto
+
+            objeto_repetido = 'O' not in self.__mundo[pos_i][pos_j].objeto
+
+            if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
+                # seta objeto 'O' para representar o ouro.
+                self.__mundo[pos_i][pos_j].objeto = 'O' 
+
+                # senta a percepção br para representar o brilho
+                self.__mundo[pos_i][pos_j].percepcao = 'br' 
+
+                return pos_i, pos_j
+    
+    def __set_object(self, objeto:str, percepcao:str) -> tuple[int, int]:
+        '''
+        Função que cálcula a posição aleatória do ouro e sua percepção.
+        '''
+        while True:
+            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
+            pos_j = random.randint(0, self.__size - 1) # cálcula a posição j
+            
+            # verifica se as posição cálculada é a inicial
+            e_posicao_inicial = pos_i == 0 and pos_j == 0
+
+            # verifica se as posição cálculada está sem Poço
+            sala_sem_poco = self.__mundo[pos_i][pos_j].objeto != 'P'
+            
+            objeto_repetido = objeto not in self.__mundo[pos_i][pos_j].objeto
+
+            if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
+                # Salva o objeto na sala
+                self.__mundo[pos_i][pos_j].objeto = objeto
+                
+                # cálcula se existe a posição abaixo da cálculada e seta a percepção
+                if pos_i + 1 < self.__size:
+                    if percepcao not in self.__mundo[pos_i + 1][pos_j].percepcao:
+                        self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
+                    
+                # cálcula se existe a posição a direita da cálculada e seta a percepção
+                if pos_j + 1 < self.__size: 
+                    if percepcao not in self.__mundo[pos_i][pos_j + 1].percepcao:
+                        self.__mundo[pos_i][pos_j + 1].percepcao = percepcao
+                    
+                # cálcula se existe a posição acima da cálculada e seta a percepção
+                if pos_i - 1 >= 0:
+                    if percepcao not in self.__mundo[pos_i - 1][pos_j].percepcao:
+                        self.__mundo[pos_i - 1][pos_j].percepcao = percepcao
+                    
+                # cálcula se existe a posição a esquerda da cálculada e seta a percepção
+                if pos_j - 1 >= 0:
+                    if percepcao not in self.__mundo[pos_i][pos_j - 1].percepcao:
+                        self.__mundo[pos_i][pos_j - 1].percepcao = percepcao
+                
+                return pos_i, pos_j
     
     def new(self, size:int, wumpus_qtd:int=None, poco_qtd:int=None, gold_qtd:int=None):
         '''
@@ -83,72 +151,21 @@ class Ambiente:
             pos = self.__set_gold() 
             self.__posicoes['O'].append(pos) 
     
-    def __set_gold(self) -> tuple[int, int]:
-        '''
-        Função que cálcula a posição aleatória do ouro e sua percepção.
-        '''
-        while True:
-            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
-            pos_j = random.randint(0, self.__size - 1)# cálcula a posição j
-
-            # verifica se as posição cálculada é a inicial
-            e_posicao_inicial = pos_i == 0 and pos_j == 0
-
-            # verifica se as posição cálculada está sem Poço
-            sala_sem_poco = 'P' not in self.__mundo[pos_i][pos_j].objeto
-
-            objeto_repetido = 'O' not in self.__mundo[pos_i][pos_j].objeto
-
-            if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
-                # seta objeto 'O' para representar o ouro.
-                self.__mundo[pos_i][pos_j].objeto = 'O' 
-
-                # senta a percepção br para representar o brilho
-                self.__mundo[pos_i][pos_j].percepcao = 'br' 
-
-                return pos_i, pos_j 
-
-    def __set_object(self, objeto:str, percepcao:str) -> tuple[int, int]:
-        '''
-        Função que cálcula a posição aleatória do ouro e sua percepção.
-        '''
-        while True:
-            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
-            pos_j = random.randint(0, self.__size - 1) # cálcula a posição j
+    def load(self, size:int, id:int, salas:list[dict]):
+        self.__size = size
+        self.__id = id
+        
+        self.__mundo = [
+            [
+                None for _ in range(size)
+            ] for _ in range(size)
+        ]
+        for sala in salas:
+            i = sala['pos_i']
+            j = sala['pos_j']
             
-            # verifica se as posição cálculada é a inicial
-            e_posicao_inicial = pos_i == 0 and pos_j == 0
+            self.__mundo[i][j] = sala
 
-            # verifica se as posição cálculada está sem Poço
-            sala_sem_poco = self.__mundo[pos_i][pos_j].objeto != 'P'
-            
-            objeto_repetido = objeto not in self.__mundo[pos_i][pos_j].objeto
-
-            if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
-                # Salva o objeto na sala
-                self.__mundo[pos_i][pos_j].objeto = objeto
-                
-                # cálcula se existe a posição abaixo da cálculada e seta a percepção
-                if pos_i + 1 < self.__size:
-                    if percepcao not in self.__mundo[pos_i + 1][pos_j].percepcao:
-                        self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
-                    
-                # cálcula se existe a posição a direita da cálculada e seta a percepção
-                if pos_j + 1 < self.__size: 
-                    if percepcao not in self.__mundo[pos_i][pos_j + 1].percepcao:
-                        self.__mundo[pos_i][pos_j + 1].percepcao = percepcao
-                    
-                # cálcula se existe a posição acima da cálculada e seta a percepção
-                if pos_i - 1 >= 0:
-                    if percepcao not in self.__mundo[pos_i - 1][pos_j].percepcao:
-                        self.__mundo[pos_i - 1][pos_j].percepcao = percepcao
-                    
-                # cálcula se existe a posição a esquerda da cálculada e seta a percepção
-                if pos_j - 1 >= 0:
-                    if percepcao not in self.__mundo[pos_i][pos_j - 1].percepcao:
-                        self.__mundo[pos_i][pos_j - 1].percepcao = percepcao
-                
-                return pos_i, pos_j
     
     def reload(self):
         '''
@@ -159,7 +176,7 @@ class Ambiente:
             for i,j in self.__posicoes[key]:
                 if key not in str(self.__mundo[i][j]):
                     self.__mundo[i][j] = key
-
+    
     def to_dict(self) -> dict:
         '''
         Retorna o mundo em forma de dicionario
@@ -173,7 +190,7 @@ class Ambiente:
 
     def salas_dict(self) -> list[dict]:
         dados:list[dict] = []
-        
+
         for i in range(self.__size):
             for j in range(self.__size):
                 sala = self.__mundo[i][j].to_dict()
@@ -184,11 +201,58 @@ class Ambiente:
 
         return dados
                    
-    def get_word(self) -> list[Sala]:
+    def get_word(self) -> list[list[str]]:
         '''
-        Retorna a matriz do mundo
+        Retorna a matriz de objetos mundo
         '''
-        return self.__mundo
+        saida = []
+        for i in range(self.__size):
+            saida.append([])
+            for j in range(self.__size):
+                objeto = self.__mundo[i][j].objeto
+                saida[i].append(objeto)
+                
+        return saida
+
+    def get_percepcoes(self) -> list[list[str]]:
+        '''
+        Retorna a matriz de objetos mundo
+        '''
+        saida = []
+        for i in range(self.__size):
+            saida.append([])
+            for j in range(self.__size):
+                percepcao = self.__mundo[i][j].percepcao
+                saida[i].append(percepcao)
+                
+        return saida
+
+    def check_status(self, pos_i:int, pos_j:int):
+        '''
+        Retorna o status atual do mundo com base na sala atual
+        '''
+        status = ''
+        
+        # Verifica se o agente foi devorado pelo wumpus
+        devorado = 'W' in self.__mundo[pos_i][pos_j].objeto
+        
+        # Verifica se o agente caiu no poço
+        caiu = 'P' in self.__mundo[pos_i][pos_j].objeto
+        
+        if devorado:
+            status = 'W'
+        elif caiu:
+            status = 'P'
+        else:
+            status = '-'
+        
+        saida = {
+            'percepcao':self.__mundo[pos_i][pos_j].percepcao,
+            'status':status
+        }
+        
+        
+        return saida
     
     def show_world(self) -> str:
         ''' 
@@ -216,8 +280,3 @@ class Ambiente:
 
         return saida
 
-    def get_percepcao(self, pos_i:int, pos_j:int):
-        '''
-        Retorna a percepçao de uma sala específica
-        '''
-        return self.__mundo[pos_i][pos_j].percepcao
