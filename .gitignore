@@ -3,6 +3,7 @@ documentos/
 routes/__pycache__/
 *.pyc
 .venv
+.env
 db.*
 app.py
 aviso.*

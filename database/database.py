@@ -1,11 +1,25 @@
 # import mysql.connector
 import pymysql
 from pathlib import Path
+from dotenv import load_dotenv # type:ignore
+import os
 
 from database.querys import init, insert, select
-from database.config_db import DB_CONFIG # Dicionario com as Configuações do MySQL
+# from database.config_db import DB_CONFIG # Dicionario com as Configuações do MySQL
+
+# Carrega as variáveis de ambiente do arquivo .env
+load_dotenv()
+
+# Configurações do banco de dados
+DB_CONFIG = {
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'port': int(os.getenv('DB_PORT'))
+}
 
 def init_db():
+    connection = None
     try:
         # Conecta ao banco de dados MySQL
         # connection = mysql.connector.connect(**DB_CONFIG)
@@ -33,6 +47,7 @@ def init_db():
 
 def get_mundo_qtd() -> int:
     mundo_qtd = None
+    connection = None
     try:
         # Conecta ao banco de dados MySQL
         # connection = mysql.connector.connect(**DB_CONFIG)
@@ -57,6 +72,7 @@ def get_mundo_qtd() -> int:
     return mundo_qtd[0] if mundo_qtd else 0
 
 def add_mundo(mundo: dict):
+    connection = None
     try:
         # Conecta ao banco de dados MySQL
         # connection = mysql.connector.connect(**DB_CONFIG)
@@ -79,6 +95,7 @@ def add_mundo(mundo: dict):
             print("Conexão com o MySQL encerrada.")
 
 def add_salas(salas: list[dict]):
+    connection = None
     try:
         # Conecta ao banco de dados MySQL
         # connection = mysql.connector.connect(**DB_CONFIG)
@@ -104,18 +121,3 @@ def add_salas(salas: list[dict]):
 # Exemplo de uso
 if __name__ == "__main__":
     init_db()
-    
-    # # Adiciona um mundo
-    # mundo = {'id': 1, 'nome': 'Mundo 1'}
-    # add_mundo(mundo)
-    
-    # # Adiciona salas
-    # salas = [
-    #     {'id': 1, 'nome': 'Sala 1', 'mundo_id': 1},
-    #     {'id': 2, 'nome': 'Sala 2', 'mundo_id': 1}
-    # ]
-    # add_salas(salas)
-    
-    # # Obtém a quantidade de mundos
-    # qtd = get_mundo_qtd()
-    # print(f'Quantidade de mundos: {qtd}')
