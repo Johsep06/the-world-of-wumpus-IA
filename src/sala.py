@@ -40,7 +40,7 @@ class Sala:
     
     @caminho.setter
     def caminho(self, value: str):
-        return self.__caminho
+        self.__caminho = value
 
     @property
     def percepcao(self) -> str:

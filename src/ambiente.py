@@ -12,7 +12,7 @@ class Ambiente:
         self.__id:int = None
         self.__size:int = None
         self.__posicoes = {}
-        self.__agents = []
+        self.__agents = {}
 
     def __str__(self): 
         '''
@@ -169,7 +169,6 @@ class Ambiente:
             sala.percepcao = dado['percepcao']
             
             self.__mundo[i][j] = sala
-
     
     def reload(self):
         '''
@@ -284,3 +283,31 @@ class Ambiente:
 
         return saida
 
+    def set_agente(self, agente_id:int, pos_i:int=None, pos_j:int=None):
+        if pos_i is None:
+            pos_i = 0
+
+        if pos_j is None:
+            pos_j = 0
+            
+        self.__agents[agente_id] = { 'pos_i':pos_i, 'pos_j':pos_j}
+        self.__mundo[pos_i][pos_j].caminho = 'A'
+        
+    def mover(self, agente_id:int, direcao:str):
+        direcoes = {
+            'N':(-1, 0),
+            'S':(1, 0),
+            'L':(0, 1),
+            'O':(0, -1),
+        }
+        
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
+
+        self.__mundo[pos_i][pos_j].caminho = '-'
+        pos_i += direcoes[direcao][0]
+        pos_j += direcoes[direcao][1]
+        self.__mundo[pos_i][pos_j].caminho = 'A'
+        self.__agents[agente_id]['pos_i'] = pos_i
+        self.__agents[agente_id]['pos_j'] = pos_j
+    
