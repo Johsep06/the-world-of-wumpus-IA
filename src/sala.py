@@ -29,10 +29,7 @@ class Sala:
     
     @objeto.setter
     def objeto(self, value: str):
-        if self.__objeto == '-':
             self.__objeto = value
-        else:
-            self.__objeto += value
     
     @property
     def caminho(self) -> str:

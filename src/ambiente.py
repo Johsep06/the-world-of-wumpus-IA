@@ -44,7 +44,10 @@ class Ambiente:
 
             if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
                 # seta objeto 'O' para representar o ouro.
-                self.__mundo[pos_i][pos_j].objeto = 'O' 
+                if self.__mundo[pos_i][pos_j].objeto == '-':
+                    self.__mundo[pos_i][pos_j].objeto = 'O' 
+                else:
+                    self.__mundo[pos_i][pos_j].objeto += 'O' 
 
                 # senta a percepção br para representar o brilho
                 self.__mundo[pos_i][pos_j].percepcao = 'br' 
@@ -69,7 +72,10 @@ class Ambiente:
 
             if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
                 # Salva o objeto na sala
-                self.__mundo[pos_i][pos_j].objeto = objeto
+                if self.__mundo[pos_i][pos_j].objeto == '-':
+                    self.__mundo[pos_i][pos_j].objeto = objeto
+                else:
+                    self.__mundo[pos_i][pos_j].objeto += objeto
                 
                 # cálcula se existe a posição abaixo da cálculada e seta a percepção
                 if pos_i + 1 < self.__size:
@@ -151,22 +157,35 @@ class Ambiente:
             pos = self.__set_gold() 
             self.__posicoes['O'].append(pos) 
     
-    def load(self, size:int, id:int, salas_dict:list[dict]):
+    def load(self, size:int, id:int, salas:tuple[tuple]):
         self.__size = size
         self.__id = id
+        
+        self.__posicoes = {
+            'O':[],
+            'W':[],
+            'P':[]
+        }
         
         self.__mundo = [
             [
                 None for _ in range(size)
             ] for _ in range(size)
         ]
-        for dado in salas_dict:
-            i = dado['pos_i']
-            j = dado['pos_j']
+        for dado in salas:
+            i = dado[1]
+            j = dado[2]
 
             sala = Sala()
-            sala.objeto = dado['objeto']
-            sala.percepcao = dado['percepcao']
+            sala.percepcao = dado[3]
+            sala.objeto = dado[4]
+            
+            if 'O' in sala.objeto:
+                self.__posicoes['O'].append((i, j))
+            if 'W' in sala.objeto:
+                self.__posicoes['W'].append((i, j))
+            if 'P' in sala.objeto:
+                self.__posicoes['P'].append((i, j))
             
             self.__mundo[i][j] = sala
     
@@ -177,8 +196,8 @@ class Ambiente:
         
         for key in self.__posicoes:
             for i,j in self.__posicoes[key]:
-                if key not in str(self.__mundo[i][j]):
-                    self.__mundo[i][j] = key
+                if key.upper() not in str(self.__mundo[i][j]):
+                    self.__mundo[i][j].objeto = self.__mundo[i][j].objeto.upper()
     
     def to_dict(self) -> dict:
         '''
@@ -230,11 +249,14 @@ class Ambiente:
                 
         return saida
 
-    def check_status(self, pos_i:int, pos_j:int):
+    def check_status(self, agente_id:int):
         '''
         Retorna o status atual do mundo com base na sala atual
         '''
         status = ''
+        
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
         
         # Verifica se o agente foi devorado pelo wumpus
         devorado = 'W' in self.__mundo[pos_i][pos_j].objeto
@@ -311,3 +333,51 @@ class Ambiente:
         self.__agents[agente_id]['pos_i'] = pos_i
         self.__agents[agente_id]['pos_j'] = pos_j
     
+    def atirar(self, agente_id:int, direcao:str, flechas:int):
+        if flechas == 0: return ''
+
+        direcoes = {
+            'n':(-1, 0),
+            's':(1, 0),
+            'l':(0, 1),
+            'o':(0, -1),
+        }
+        
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
+        pos_i += direcoes[direcao][0]
+        pos_j += direcoes[direcao][1]
+
+        if 'W' in self.__mundo[pos_i][pos_j].objeto:
+            objeto = self.__mundo[pos_i][pos_j].objeto.replace('W', 'w')
+            self.__mundo[pos_i][pos_j].objeto = objeto
+    
+    def pegar(self, agente_id:int):
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
+        
+        if 'O' in self.__mundo[pos_i][pos_j].objeto:
+            objeto = self.__mundo[pos_i][pos_j].objeto.replace('O', 'o')
+            self.__mundo[pos_i][pos_j].objeto = objeto
+
+            return 'O'
+
+        else:
+            return ''
+        
+    def direcoes_possiveis(self, agente_id:int):
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
+
+        saida = ''
+        
+        if pos_i != 0:
+            saida += 'N'
+        if pos_i != self.__size - 1:
+            saida += 'S'
+        if pos_j != 0:
+            saida += 'O'
+        if pos_j != self.__size - 1:
+            saida += 'L'
+
+        return saida

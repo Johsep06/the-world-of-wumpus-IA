@@ -118,6 +118,42 @@ def add_salas(salas: list[dict]):
             connection.close()
             print("Conexão com o MySQL encerrada.")
 
+def get_mundo(mundo_id:int):
+    mundo = None
+    salas = None
+    connection = None
+    try:
+        # Conecta ao banco de dados MySQL
+        # connection = mysql.connector.connect(**DB_CONFIG)
+        connection = pymysql.connect(**DB_CONFIG)
+        cursor = connection.cursor()
+        
+        cursor.execute(init.USE_DATABASE)
+        connection.commit()
+        
+        # Executa a consulta para obter a quantidade de mundos
+        param = {'mundo_id':mundo_id}
+        cursor.execute(select.MUNDO_BY_ID, param)
+        mundo = cursor.fetchone()
+        
+        
+        cursor.execute(select.SALA, param)
+        salas = cursor.fetchall()
+        
+    except Exception as e:
+        print('Erro ao acessar o banco de dados:', str(e))
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            print("Conexão com o MySQL encerrada.")
+    
+    return {
+        'id':mundo[0],
+        'size':mundo[1],
+        'salas':salas
+    }
+
 # Exemplo de uso
 if __name__ == "__main__":
     init_db()

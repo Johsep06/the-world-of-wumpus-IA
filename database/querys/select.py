@@ -2,6 +2,11 @@ MUNDO = '''
 SELECT *
 FROM MUNDO;'''
 
+MUNDO_BY_ID = '''
+SELECT *
+FROM MUNDO
+WHERE ID = %(mundo_id)s'''
+
 SALA = '''
 SELECT *
 FROM SALA
