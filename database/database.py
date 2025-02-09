@@ -71,6 +71,32 @@ def get_mundo_qtd() -> int:
     
     return mundo_qtd[0] if mundo_qtd else 0
 
+def get_agente_qtd() -> int:
+    agente_qtd = None
+    connection = None
+    try:
+        # Conecta ao banco de dados MySQL
+        # connection = mysql.connector.connect(**DB_CONFIG)
+        connection = pymysql.connect(**DB_CONFIG)
+        cursor = connection.cursor()
+        
+        cursor.execute(init.USE_DATABASE)
+        connection.commit()
+        
+        # Executa a consulta para obter a quantidade de Agentes
+        cursor.execute(select.AGENTE_QTD)
+        agente_qtd = cursor.fetchone()
+        
+    except Exception as e:
+        print('Erro ao acessar o banco de dados:', str(e))
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            print("Conexão com o MySQL encerrada.")
+    
+    return agente_qtd[0] if agente_qtd else 0
+
 def add_mundo(mundo: dict):
     connection = None
     try:
