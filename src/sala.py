@@ -45,10 +45,7 @@ class Sala:
     
     @percepcao.setter
     def percepcao(self, value:str):
-        if self.__percepcao == '-':
-            self.__percepcao = value
-        else:
-            self.__percepcao += ',' + value
+        self.__percepcao = value
 
     def __str__(self) -> str:
         return self.exibir
