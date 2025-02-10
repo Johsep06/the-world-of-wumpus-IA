@@ -14,6 +14,10 @@ class Ambiente:
         self.__posicoes = {}
         self.__agents = {}
 
+    @property
+    def id(self):
+        return self.__id
+
     def __str__(self): 
         '''
         Função que permite a converção do objeto em string.
@@ -84,7 +88,7 @@ class Ambiente:
                 # cálcula se existe a posição abaixo da cálculada e seta a percepção
                 if pos_i + 1 < self.__size:
                     if percepcao not in self.__mundo[pos_i + 1][pos_j].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
+                        percepcao_na_sala = self.__mundo[pos_i + 1][pos_j].percepcao
                         if percepcao_na_sala == '-':
                             self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
                         else:
@@ -93,29 +97,29 @@ class Ambiente:
                 # cálcula se existe a posição a direita da cálculada e seta a percepção
                 if pos_j + 1 < self.__size: 
                     if percepcao not in self.__mundo[pos_i][pos_j + 1].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
+                        percepcao_na_sala = self.__mundo[pos_i][pos_j + 1].percepcao
                         if percepcao_na_sala == '-':
-                            self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
+                            self.__mundo[pos_i][pos_j + 1].percepcao = percepcao
                         else:
-                            self.__mundo[pos_i + 1][pos_j].percepcao = ',' + percepcao
+                            self.__mundo[pos_i][pos_j + 1].percepcao = ',' + percepcao
                     
                 # cálcula se existe a posição acima da cálculada e seta a percepção
                 if pos_i - 1 >= 0:
                     if percepcao not in self.__mundo[pos_i - 1][pos_j].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
+                        percepcao_na_sala = self.__mundo[pos_i - 1][pos_j].percepcao
                         if percepcao_na_sala == '-':
-                            self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
+                            self.__mundo[pos_i - 1][pos_j].percepcao = percepcao
                         else:
-                            self.__mundo[pos_i + 1][pos_j].percepcao = ',' + percepcao
+                            self.__mundo[pos_i - 1][pos_j].percepcao = ',' + percepcao
                     
                 # cálcula se existe a posição a esquerda da cálculada e seta a percepção
                 if pos_j - 1 >= 0:
                     if percepcao not in self.__mundo[pos_i][pos_j - 1].percepcao:
                         percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
                         if percepcao_na_sala == '-':
-                            self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
+                            self.__mundo[pos_i][pos_j - 1].percepcao = percepcao
                         else:
-                            self.__mundo[pos_i + 1][pos_j].percepcao = ',' + percepcao
+                            self.__mundo[pos_i][pos_j - 1].percepcao = ',' + percepcao
                 
                 return pos_i, pos_j
     
@@ -224,12 +228,12 @@ class Ambiente:
         '''
         Retorna o mundo em forma de dicionario
         '''
-        dado = {
+        dados = {
             'size': self.__size,
             'id': self.__id
         }
         
-        return dado
+        return dados
 
     def salas_dict(self) -> list[dict]:
         dados:list[dict] = []
@@ -388,6 +392,7 @@ class Ambiente:
         if 'W' in self.__mundo[pos_i][pos_j].objeto:
             objeto = self.__mundo[pos_i][pos_j].objeto.replace('W', 'w')
             self.__mundo[pos_i][pos_j].objeto = objeto
+            return 'g'
     
     def pegar(self, agente_id:int):
         pos_i = self.__agents[agente_id]['pos_i']

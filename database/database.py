@@ -97,7 +97,7 @@ def get_agente_qtd() -> int:
     
     return agente_qtd[0] if agente_qtd else 0
 
-def add_mundo(mundo: dict):
+def save_mundo(mundo: dict):
     connection = None
     try:
         # Conecta ao banco de dados MySQL
@@ -120,7 +120,30 @@ def add_mundo(mundo: dict):
             connection.close()
             print("Conexão com o MySQL encerrada.")
 
-def add_salas(salas: list[dict]):
+def save_agente(agente: dict):
+    connection = None
+    try:
+        # Conecta ao banco de dados MySQL
+        # connection = mysql.connector.connect(**DB_CONFIG)
+        connection = pymysql.connect(**DB_CONFIG)
+        cursor = connection.cursor()
+        
+        cursor.execute(init.USE_DATABASE)
+        connection.commit()
+        
+        # Insere um novo mundo usando placeholders
+        cursor.execute(insert.AGENTE, agente)
+        connection.commit()
+        
+    except Exception as e:
+        print('Erro ao acessar o banco de dados:', str(e))
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            print("Conexão com o MySQL encerrada.")
+
+def save_salas(salas: list[dict]):
     connection = None
     try:
         # Conecta ao banco de dados MySQL
