@@ -1,26 +1,29 @@
 {% for i in range(size) %}
-    <div class="row" style="width: {{ size * 120}}px;">
-        {% for j in range(size) %}
-            <div id="cell-{{ i }}-{{ j }}" class="cell">
+<div class="row" style="width: {{ size * 120}}px;">
+    {% for j in range(size) %}
+    <div id="cell-{{ i }}-{{ j }}" {% if world[i][j]=='P' %} class="cell poco" {% else %} class="cell" {% endif %}>
 
+        <figure {% if world[i][j]=='S' %} class="porta" {% endif %}></figure>
+        <figure {% if world[i][j]=='O' %} class="gold" {% endif %}></figure>
+        <figure {% if world[i][j]=='A' %} class="agente" {% endif %}></figure>
+        <figure {% if world[i][j]=='W' %} class="wumpus" {% endif %}></figure>
+        <!-- 
                 {% if world[i][j] == 'A' %}
                     <img id="agente" src="{{url_for('static', filename='assets/agente.png')}}" alt="Guerreiro">
                 {% elif world[i][j] == 'S' %}
                     <figure class="porta"></figure>
-                    <!-- <img id="porta" src="{{url_for('static', filename='assets/porta.png')}}" alt="Saída"> -->
-                {% elif world[i][j] == 'W' %}
-                    <figure class="wumpus"></figure>
-                {% elif world[i][j] == 'P' %}
-                    <figure class="poco"></figure>
-                    <!-- <img id="poco" src="{{url_for('static', filename='assets/poço.png')}}" alt="Poço"> -->
-                {% elif world[i][j] == 'O' %}
-                    <!-- <img id="gold" src="{{url_for('static', filename='assets/diamond.png')}}" alt="Ouro"> -->
-                    <figure class="gold"></figure>
+                     <img id="porta" src="{{url_for('static', filename='assets/porta.png')}}" alt="Saída"> -->
+        <!-- {% elif world[i][j] == 'W' %}
+                    <figure class="wumpus"></figure>  -->
+        <!-- <img id="poco" src="{{url_for('static', filename='assets/poço.png')}}" alt="Poço"> -->
+        <!-- {% elif world[i][j] == 'O' %} -->
+        <!-- <img id="gold" src="{{url_for('static', filename='assets/diamond.png')}}" alt="Ouro"> -->
+        <!-- <figure class="gold"></figure>
                 {% else %}
                     {{ world[i][j] }}
-                {% endif %}
+                {% endif %} -->
 
-            </div>
-        {% endfor %}
     </div>
+    {% endfor %}
+</div>
 {% endfor %}

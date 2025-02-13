@@ -4,14 +4,19 @@ body {
 }
 
 aside {
-    height: 500px;
+    height: 600px;
     width: 400px;
-    background-color: black;
-    background-image: url(../assets/inventario.png);
-    opacity: .7;
+    background-color: #4F4F4F;
+    /* background-image: url(../assets/inventario_dark.png); */
+    /* opacity: .7; */
+    border-top: 7px solid #666666;
+    border-right: 7px solid #666666;
+    border-bottom: 7px solid #222222;
+    border-left: 7px solid #222222;
     position: fixed;
     z-index: 2;
     right: 0;
+    color: #aaaaaa;
 }
 
 #world {
