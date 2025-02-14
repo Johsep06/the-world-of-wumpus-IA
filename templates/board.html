@@ -3,10 +3,10 @@
     {% for j in range(size) %}
     <div id="cell-{{ i }}-{{ j }}" {% if world[i][j]=='P' %} class="cell poco" {% else %} class="cell" {% endif %}>
 
-        <figure {% if world[i][j]=='S' %} class="porta" {% endif %}></figure>
-        <figure {% if world[i][j]=='O' %} class="gold" {% endif %}></figure>
-        <figure {% if world[i][j]=='A' %} class="agente" {% endif %}></figure>
-        <figure {% if world[i][j]=='W' %} class="wumpus" {% endif %}></figure>
+        <figure {% if 'S' in world[i][j] %} class="porta" {% endif %}></figure>
+        <figure {% if 'O' in world[i][j] %} class="gold" {% endif %}></figure>
+        <figure {% if 'A' in world[i][j] %} class="agente" {% endif %}></figure>
+        <figure {% if 'W' in world[i][j] %} class="wumpus" {% endif %}></figure>
         <!-- 
                 {% if world[i][j] == 'A' %}
                     <img id="agente" src="{{url_for('static', filename='assets/agente.png')}}" alt="Guerreiro">

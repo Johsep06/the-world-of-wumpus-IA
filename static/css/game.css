@@ -4,22 +4,21 @@ body {
 }
 
 aside {
-    height: 600px;
-    width: 400px;
-    background-color: #4F4F4F;
-    /* background-image: url(../assets/inventario_dark.png); */
-    /* opacity: .7; */
-    border-top: 7px solid #666666;
-    border-right: 7px solid #666666;
-    border-bottom: 7px solid #222222;
-    border-left: 7px solid #222222;
+    height: 95vh;
+    width: 30vw;
+    background-color: #C6C6C6;
+    border-width: 1.2vh;
+    border-style: solid;
+    border-color: #FFFFFF #FFFFFF #555555 #555555;
+    /** border-color: #666666 #666666 #222222 #222222; cor Preta */
     position: fixed;
     z-index: 2;
     right: 0;
-    color: #aaaaaa;
+    color: #3C3C3C;
 }
 
 #world {
+    margin-right: 30vw;
     position: absolute;
     z-index: 1;
     width: auto;
