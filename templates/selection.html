@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mundo de Wumpus</title>
+  <link rel="icon" href="{{ url_for('static', filename='assets/creeper.png') }}" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/selection.css') }}">
+</head>
+
+<body class="background-img">
+  <main>
+    <section id="agente_container">
+      <div class="skin-selector">
+        <button id="anterior" class="skin interface" onclick="change_skin('-')"><</button>
+        <figure id="skin" class="img"></figure>
+        <button id="proximo" class="skin interface" onclick="change_skin('+')">></button>
+      </div>
+      <div class="agente_seletor">
+        <button id="agente-1" class="interface agente">Agente 1</button>
+        <button id="agente-2" class="interface agente">Agente 2</button>
+        <button id="agente-3" class="interface agente">Agente 3</button>
+      </div>
+    </section>
+    <section id="mundo_container"></section>
+  </main>
+</body>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/selection.js') }}"></script>
+
+</html>

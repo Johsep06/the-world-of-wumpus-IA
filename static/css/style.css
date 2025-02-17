@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../fonts/minecraft_font.woff') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,8 +12,8 @@
 }
 
 body {
-    height: 100vh;
     width: 100vw;
+    font-family: 'Minecraft', sans-serif;
 }
 
 .back-grad {
@@ -24,4 +31,31 @@ body {
 
 .op-1 {
     opacity: 1;
+}
+
+.img {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.logo {
+    background-image: url('../assets/logo.png');
+}
+
+.interface {
+    background-color: #C6C6C6;
+    border-style: solid;
+    border-color: #FFFFFF #FFFFFF #555555 #555555;
+    color: #3C3C3C;
+}
+
+button.interface:hover {
+    border-color: lightgreen lightgreen green   green;
+    color: green;
+}
+button.interface:active {
+    background-color: #89898B;
+    border-color: #4D4D4D #F8F8F8 #F8F8F8 #4D4D4D;
 }

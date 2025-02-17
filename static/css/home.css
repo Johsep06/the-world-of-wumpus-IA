@@ -1,18 +1,30 @@
-.container {
-    height: 100vh;
-    width: 100vh;
+/* body  */
+main {
+    margin: auto;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    height: 500px;
+    width: 900px;
 }
 
-.button {
-    width: 50%;
-    height: 20%;
-    border-radius: 15px;
-    color: white;
-    display: grid;
-    place-items: center;
-    font-size: xx-large;
+figure {
+    height: 50%;
+    width: 100%;
+}
+
+.button-container {
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+button {
+    font-weight: 200;
+    border: 4px;
+    width: 200px;
+    height: 50px;
 }

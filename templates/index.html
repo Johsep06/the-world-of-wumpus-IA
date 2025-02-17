@@ -12,7 +12,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 
-<body class="back-grad">
+<body class="background-img">
+  <main>
+    <figure class="logo img"></figure>
+    <div class="button-container">
+      <button class="interface" onclick="change_page({{ url_for('selection.selection') }})">Iniciar</button>
+      <button class="interface"> <!--Configurações--> </button> 
+      <button class="interface"> <!--Estatísticas--> </button>
+    </div>
+  </main>
 </body>
-
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </html>
