@@ -424,3 +424,9 @@ class Ambiente:
             saida += 'L'
 
         return saida
+    
+    def get_coordenada(self, agente_id):
+        pos_i = self.__agents[agente_id]['pos_i']
+        pos_j = self.__agents[agente_id]['pos_j']
+        
+        return (pos_i, pos_j)
