@@ -33,8 +33,8 @@ def __converter_em_direcoes(inicio:tuple[int,int], caminho:dict[tuple, tuple]) -
     
     posicao = inicio
     for _ in range(len(caminho)):
-        i = abs(posicao[0] - caminho[posicao][0])
-        j = abs(posicao[1] - caminho[posicao][1])
+        i = caminho[posicao][0] - posicao[0]
+        j = caminho[posicao][1] - posicao[1]
         
         direcao += str(direcoes[(i,j)])
         posicao = caminho[posicao]
@@ -98,11 +98,6 @@ def a_estrela(inicio:tuple[int, int], destino:tuple[int, int], mapa:dict[tuple[i
 
 
 if __name__ == '__main__':
-    mundo = {
-        (0,0):' ', (0,1):' ', (0,2):' ', (0,3):' ',
-        (1,0):' ', (1,1):' ', (1,2):' ', (1,3):'W',
-        (2,0):'P', (2,1):' ', (2,2):'P', (2,3):'P',
-        (3,0):' ', (3,1):' ', (3,2):' ', (3,3):'0',
-    }
-    
-    print(a_estrela((0,0), (3,3), mundo, 4))
+    rota = {(0,0):(0,1), (1,0):(0,0)}
+    s = __converter_em_direcoes((1,0), rota)
+    print(s)

@@ -6,8 +6,19 @@ class Memoria:
     def __init__(self):
         self.__memoria:dict[tuple[int, int], str] = {}
 
+    def to_dict(self):
+        dados = []
+        for posicao in self.__memoria:
+            dados.append({
+                'pos_i':posicao[0], 
+                'pos_j':posicao[1], 
+                'simbolo':self.__memoria[posicao]
+            })
+            
+        return dados
+
     def new(self,):
-        self.__memoria = {(0, 0):'-'}
+        self.__memoria = {(0, 0):'d'}
     
     def expendir_salas(self, posicao:tuple[int, int], direcoes:str):
         sentidos = {
@@ -33,7 +44,6 @@ class Memoria:
 
         posicao = fila.get()
         linha = posicao[0]
-        print(posicao, type(posicao))
         saida += self.__memoria[posicao]
         
         while not fila.empty():
@@ -46,10 +56,17 @@ class Memoria:
 
         return saida
 
+    def get_memoria(self):
+        return self.__memoria
+
     def marcar_mapa(self, posicao:tuple[int, int], simbolo:str):
-        if self.__memoria[posicao] == 'd':
+        if self.__memoria[posicao].lower() == 'd':
             self.__memoria[posicao] = simbolo
         elif '!' in self.__memoria[posicao] or '?' in self.__memoria[posicao]:
+            self.__memoria[posicao] = simbolo
+        elif simbolo == '-':
+            if self.__memoria[posicao].lower() != 'd':
+                return
             self.__memoria[posicao] = simbolo
         else:
             self.__memoria[posicao] += simbolo
@@ -100,11 +117,17 @@ class Memoria:
         else:
             for sala in salas_seguras:
                 self.__memoria[sala] = 'D'
-                
+    
+    def buscar(self, valor):
+        localizacao = None
+        for posicao in self.__memoria:
+            if self.__memoria[posicao] == valor:
+                localizacao = posicao
+                break
+
+        return localizacao
+    
 if __name__ == '__main__':
     memoria = Memoria()
-    memoria.new(4)
-    memoria.marcar_mapa((2,1), '-')
-    memoria.assegurar_salas((1,3))
-    memoria.suspeitar_salas((2,2), 'W')
-    print(memoria)
+    memoria.new()
+    print(memoria.to_dict())
