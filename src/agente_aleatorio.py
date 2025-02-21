@@ -39,7 +39,7 @@ class AgenteAleatorio(Agente):
         self.status()
             
         if self.final['status'] == 'V':
-            self._pontos += 1000
+            self._pontos += 1000 * self.inventario['ouro']
         elif self.final['status'] == 'W':
             self._pontos -= 1000
         elif self.final['status'] == 'P':

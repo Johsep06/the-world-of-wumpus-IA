@@ -7,7 +7,7 @@ class Sala:
             - caminho:str = parte da Sala por onde o agente vai se mover sem sobreescrever os outos dados.
         '''
         self.__objeto = '-'
-        self.__percepcao = '-'
+        self.__percepcao = ['-']
         self.__caminho = '-'
         self.__exibir = '-'
     
@@ -41,11 +41,14 @@ class Sala:
 
     @property
     def percepcao(self) -> str:
-        return self.__percepcao
+        return ','.join( self.__percepcao)
     
     @percepcao.setter
     def percepcao(self, value:str):
-        self.__percepcao = value
+        if value not in self.__percepcao and '-' in self.percepcao:
+            self.__percepcao[0] = value
+        elif value not in self.__percepcao:
+            self.__percepcao.append(value)
 
     def __str__(self) -> str:
         return self.exibir

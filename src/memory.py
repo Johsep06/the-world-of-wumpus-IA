@@ -18,7 +18,7 @@ class Memoria:
         return dados
 
     def new(self,):
-        self.__memoria = {(0, 0):'d'}
+        self.__memoria = {(0, 0):'S'}
     
     def expendir_salas(self, posicao:tuple[int, int], direcoes:str):
         sentidos = {
@@ -121,11 +121,31 @@ class Memoria:
     def buscar(self, valor):
         localizacao = None
         for posicao in self.__memoria:
-            if self.__memoria[posicao] == valor:
+            if valor in self.__memoria[posicao]:
                 localizacao = posicao
                 break
 
         return localizacao
+    
+    def buscar_maior_peso(self, valor):
+        posicoes_com_pesos = {}
+        
+        for posicao in self.__memoria:
+            if valor in self.__memoria[posicao]:
+                peso = self.__memoria[posicao].count(valor)
+                posicoes_com_pesos[posicao] = peso
+        
+        maior_peso = 0
+        localizacao = None
+        
+        for posicao in posicoes_com_pesos:
+            if posicoes_com_pesos[posicao] > maior_peso:
+                maior_peso = posicoes_com_pesos[posicao]
+                localizacao = posicao
+        return localizacao
+    
+    def checar_sala(self, posicao:tuple[int, int]):
+        return self.__memoria[posicao]         
     
 if __name__ == '__main__':
     memoria = Memoria()

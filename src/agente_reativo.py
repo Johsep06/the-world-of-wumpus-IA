@@ -26,13 +26,23 @@ class AgenteReativo(Agente):
         percepcao = status_atual['percepcao']
         if percepcao == '-':
             self._memoria.assegurar_salas(sala_atual)
-        if 'f' in percepcao:
+            
+        if 'f' in percepcao and self._memoria.checar_sala(sala_atual) == 'D':
             self._memoria.suspeitar_salas(sala_atual, 'W')
-        if 'br' in percepcao:
+
+        if 'br' in percepcao and self._memoria.checar_sala(sala_atual) != 'o':
             self._memoria.marcar_mapa(sala_atual, 'o')
-            print(self._mundo.pegar(self.id))
             
+            if self._mundo.pegar(self.id) == 'O':
+                self.inventario['ouro'] += 1 
+        if 'b' in percepcao and self._memoria.checar_sala(sala_atual) == 'D':
+            qtd_de_brisa = percepcao.count('b')
+            qtd_de_brilho = percepcao.count('br')
+            print(percepcao)
             
+            if qtd_de_brisa - qtd_de_brilho >= 0:
+                self._memoria.suspeitar_salas(sala_atual, 'P')
+                
         if status_atual['status'] == 'P':
             self._memoria.marcar_mapa(sala_atual, 'P')
         elif 'W' in status_atual['status']:
@@ -42,10 +52,13 @@ class AgenteReativo(Agente):
             
         proxima_posicao = self._memoria.buscar('D')
         if proxima_posicao is None:
-            proxima_posicao = self._memoria.buscar('D')
+            proxima_posicao = self._memoria.buscar('O')
+        if proxima_posicao is None:
+            proxima_posicao = self._memoria.buscar_maior_peso('?')
+            
+        
 
         caminho = a_estrela(sala_atual, proxima_posicao, self._memoria.get_memoria(), ['W', 'P'])
 
         self._mundo.mover(self.id, caminho[0])
         print(self._memoria)
-        print(sala_atual, proxima_posicao, caminho)
