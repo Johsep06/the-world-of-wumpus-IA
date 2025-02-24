@@ -2,13 +2,14 @@ import random
 
 from src.sala import Sala
 from database.database import get_mundo_qtd
+from datetime import datetime
 
 class Ambiente:
     def __init__(self):
         '''
         Objeto Ambiente será responsável guardar e processar os dados do mundo de wumpus.
         '''
-        self.__mundo:list[list[Sala]] = None
+        self.__mundo:dict[tuple,Sala] = None
         self.__id:int = None
         self.__size:int = None
         self.__posicoes = {}
@@ -35,94 +36,66 @@ class Ambiente:
         Função que cálcula a posição aleatória do ouro e sua percepção.
         '''
         while True:
-            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
-            pos_j = random.randint(0, self.__size - 1)# cálcula a posição j
-
+            posicao = random.choice(list(self.__mundo.keys()))
+            
             # verifica se as posição cálculada é a inicial
-            e_posicao_inicial = pos_i == 0 and pos_j == 0
+            e_posicao_inicial = posicao == (0, 0, 0)
 
             # verifica se as posição cálculada está sem Poço
-            sala_sem_poco = 'P' not in self.__mundo[pos_i][pos_j].objeto
-
-            objeto_repetido = 'O' not in self.__mundo[pos_i][pos_j].objeto
+            sala_sem_poco = self.__mundo[posicao].objeto != 'P'
+            
+            objeto_repetido = 'O' not in self.__mundo[posicao].objeto
 
             if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
                 # seta objeto 'O' para representar o ouro.
-                if self.__mundo[pos_i][pos_j].objeto == '-':
-                    self.__mundo[pos_i][pos_j].objeto = 'O' 
+                if self.__mundo[posicao].objeto == '-':
+                    self.__mundo[posicao].objeto = 'O' 
                 else:
-                    self.__mundo[pos_i][pos_j].objeto += 'O' 
+                    self.__mundo[posicao].objeto += 'O' 
 
-                # senta a percepção br para representar o brilho
-                percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
+                # seta a percepção br para representar o brilho
+                percepcao_na_sala = self.__mundo[posicao].percepcao
                 if percepcao_na_sala == '-':
-                    self.__mundo[pos_i][pos_j].percepcao = 'br' 
+                    self.__mundo[posicao].percepcao = 'br' 
                 else:
-                    self.__mundo[pos_i][pos_j].percepcao += 'br' 
+                    self.__mundo[posicao].percepcao += 'br' 
 
-                return pos_i, pos_j
+                return posicao
     
     def __set_object(self, objeto:str, percepcao:str) -> tuple[int, int]:
         '''
         Função que cálcula a posição aleatória do ouro e sua percepção.
         '''
         while True:
-            pos_i = random.randint(0, self.__size - 1) # cálcula a posição i
-            pos_j = random.randint(0, self.__size - 1) # cálcula a posição j
+            posicao = random.choice(list(self.__mundo.keys()))
             
             # verifica se as posição cálculada é a inicial
-            e_posicao_inicial = pos_i == 0 and pos_j == 0
+            e_posicao_inicial = posicao == (0, 0, 0)
 
             # verifica se as posição cálculada está sem Poço
-            sala_sem_poco = self.__mundo[pos_i][pos_j].objeto != 'P'
+            sala_sem_poco = self.__mundo[posicao].objeto != 'P'
             
-            objeto_repetido = objeto not in self.__mundo[pos_i][pos_j].objeto
+            objeto_repetido = objeto not in self.__mundo[posicao].objeto
 
             if not e_posicao_inicial and sala_sem_poco and objeto_repetido:
                 # Salva o objeto na sala
-                if self.__mundo[pos_i][pos_j].objeto == '-':
-                    self.__mundo[pos_i][pos_j].objeto = objeto
+                if self.__mundo[posicao].objeto == '-':
+                    self.__mundo[posicao].objeto = objeto
                 else:
-                    self.__mundo[pos_i][pos_j].objeto += objeto
+                    self.__mundo[posicao].objeto += objeto
+            
+                for direcao in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                    posicao_proxima = posicao[0] + direcao[0], posicao[1] + direcao[1], 0
+                    if posicao_proxima in self.__mundo:
+                        if percepcao not in self.__mundo[posicao_proxima].percepcao:
+                            percepcao_na_sala = self.__mundo[posicao_proxima].percepcao
+                            if percepcao_na_sala == '-':
+                                self.__mundo[posicao_proxima].percepcao = percepcao
+                            else:
+                                self.__mundo[posicao_proxima].percepcao = ',' + percepcao
                 
-                # cálcula se existe a posição abaixo da cálculada e seta a percepção
-                if pos_i + 1 < self.__size:
-                    if percepcao not in self.__mundo[pos_i + 1][pos_j].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i + 1][pos_j].percepcao
-                        if percepcao_na_sala == '-':
-                            self.__mundo[pos_i + 1][pos_j].percepcao = percepcao
-                        else:
-                            self.__mundo[pos_i + 1][pos_j].percepcao = ',' + percepcao
-                    
-                # cálcula se existe a posição a direita da cálculada e seta a percepção
-                if pos_j + 1 < self.__size: 
-                    if percepcao not in self.__mundo[pos_i][pos_j + 1].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i][pos_j + 1].percepcao
-                        if percepcao_na_sala == '-':
-                            self.__mundo[pos_i][pos_j + 1].percepcao = percepcao
-                        else:
-                            self.__mundo[pos_i][pos_j + 1].percepcao = ',' + percepcao
-                    
-                # cálcula se existe a posição acima da cálculada e seta a percepção
-                if pos_i - 1 >= 0:
-                    if percepcao not in self.__mundo[pos_i - 1][pos_j].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i - 1][pos_j].percepcao
-                        if percepcao_na_sala == '-':
-                            self.__mundo[pos_i - 1][pos_j].percepcao = percepcao
-                        else:
-                            self.__mundo[pos_i - 1][pos_j].percepcao = ',' + percepcao
-                    
-                # cálcula se existe a posição a esquerda da cálculada e seta a percepção
-                if pos_j - 1 >= 0:
-                    if percepcao not in self.__mundo[pos_i][pos_j - 1].percepcao:
-                        percepcao_na_sala = self.__mundo[pos_i][pos_j].percepcao
-                        if percepcao_na_sala == '-':
-                            self.__mundo[pos_i][pos_j - 1].percepcao = percepcao
-                        else:
-                            self.__mundo[pos_i][pos_j - 1].percepcao = ',' + percepcao
-                
-                return pos_i, pos_j
-    
+                return posicao
+            
     def new(self, size:int, wumpus_qtd:int=None, poco_qtd:int=None, gold_qtd:int=None):
         '''
         Cria um novo mundo apagando o antigo.
@@ -136,14 +109,16 @@ class Ambiente:
         self.__size = size
         
         # Define o id do objeto
-        self.__id = get_mundo_qtd()
+        self.__id = datetime.now()
         
         # Criação do mundo aplicado o objeto 'Sala' para cada posição.
-        self.__mundo = [
-            [Sala() for j in range(self.__size) ] for i in range(self.__size)
-        ]
+        self.__mundo = {}
+        for i in range(self.__size):
+            for j in range(self.__size):
+                self.__mundo[(i, j, 0)] = Sala()
         
-        self.__mundo[0][0].objeto = 'S'
+        self.__mundo[(0,0,0)].objeto = 'S'
+        print(self.__mundo)
         
         if poco_qtd is None:
             poco_qtd = self.__size - 1
@@ -191,27 +166,23 @@ class Ambiente:
             'P':[]
         }
         
-        self.__mundo = [
-            [
-                None for _ in range(size)
-            ] for _ in range(size)
-        ]
+        self.__mundo = {}
+
         for dado in salas:
-            i = dado[1]
-            j = dado[2]
+            posicao = dado[1], dado[2], dado[3]
 
             sala = Sala()
-            sala.percepcao = dado[3]
-            sala.objeto = dado[4]
+            sala.percepcao = dado[4]
+            sala.objeto = dado[5]
             
             if 'O' in sala.objeto:
-                self.__posicoes['O'].append((i, j))
+                self.__posicoes['O'].append(posicao)
             if 'W' in sala.objeto:
-                self.__posicoes['W'].append((i, j))
+                self.__posicoes['W'].append(posicao)
             if 'P' in sala.objeto:
-                self.__posicoes['P'].append((i, j))
+                self.__posicoes['P'].append(posicao)
             
-            self.__mundo[i][j] = sala
+            self.__mundo[posicao] = sala
     
     def reload(self):
         '''
