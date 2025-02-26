@@ -9,3 +9,4 @@ app.py
 aviso.*
 config_db.py
 SQL/
+.$DER*

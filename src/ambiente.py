@@ -190,10 +190,10 @@ class Ambiente:
         '''
         
         for key in self.__posicoes:
-            for i,j in self.__posicoes[key]:
-                if key.upper() not in str(self.__mundo[i][j]):
-                    self.__mundo[i][j].objeto = self.__mundo[i][j].objeto.upper()
-                    self.__mundo[i][j].percepcao = self.__mundo[i][j].percepcao.lower()
+            for posicao in self.__posicoes[key]:
+                if key.upper() not in str(self.__mundo[posicao]):
+                    self.__mundo[posicao].objeto = self.__mundo[posicao].objeto.upper()
+                    self.__mundo[posicao].percepcao = self.__mundo[posicao].percepcao.lower()
     
     def to_dict(self) -> dict:
         '''
@@ -209,39 +209,37 @@ class Ambiente:
     def salas_dict(self) -> list[dict]:
         dados:list[dict] = []
 
-        for i in range(self.__size):
-            for j in range(self.__size):
-                sala = self.__mundo[i][j].to_dict()
-                sala['mundo_id'] = self.__id
-                sala['pos_i'] = i
-                sala['pos_j'] = j
-                dados.append(sala)
+        for posicao in self.__mundo:
+            sala = self.__mundo[posicao].to_dict()
+            sala['mundo_id'] = self.__id
+            sala['pos_x'] = posicao[0]
+            sala['pos_y'] = posicao[1]
+            sala['pos_z'] = posicao[2]
+            dados.append(sala)
 
         return dados
                    
-    def get_word(self) -> list[list[str]]:
+    def get_word(self) -> list[dict[tuple, str]]:
         '''
         Retorna a matriz de objetos mundo
         '''
         saida = []
-        for i in range(self.__size):
-            saida.append([])
-            for j in range(self.__size):
-                objeto = self.__mundo[i][j].objeto
-                saida[i].append(objeto)
+        for posicao in self.__mundo:
+            saida.append({
+                posicao:self.__mundo[posicao].objeto
+            })
                 
         return saida
 
-    def get_percepcoes(self) -> list[list[str]]:
+    def get_percepcoes(self) -> list[dict[tuple, str]]:
         '''
         Retorna a matriz de objetos mundo
         '''
         saida = []
-        for i in range(self.__size):
-            saida.append([])
-            for j in range(self.__size):
-                percepcao = self.__mundo[i][j].percepcao
-                saida[i].append(percepcao)
+        for posicao in self.__mundo:
+            saida.append({
+                posicao:self.__mundo[posicao].percepcao
+            })
                 
         return saida
 
