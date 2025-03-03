@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mundo de Wumpus</title>
+  <link rel="icon" href="{{ url_for('static', filename='assets/creeper.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/world-config.css') }}">
+</head>
+
+<body>
+  <main class="container box">
+    <div class="type-container">
+      <label>
+        Novo Mundo <input type="radio" name="world-type" id="novo">
+      </label>
+      <label>
+        Carregar Mundo <input type="radio" name="world-type" id="carregar">
+      </label>
+    </div>
+    <section id="tela-novo" class="box">
+      <nav>
+        <label>Tamanho: <input type="number"></label>
+        <label>Ouros: <input type="number"></label>
+        <label>Wumpus: <input type="number"></label>
+        <label>Poços: <input type="number"></label>
+      </nav>
+    </section>
+    <section id="tela-carregar">
+      <nav>
+
+      </nav>
+    </section>
+    <button class="btn-01"> Continuar </button>
+  </main>
+</body>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/world-config.js') }}"></script>
+
+</html>

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <main id="start-screen" class="container">
+  <main id="start-screen" class="container box">
     <h1>Mundo de Wumpos</h1>
     <figure class="gallery">
       <img src="{{ url_for('static', filename='imgs/skins/skin-1.png') }}" alt="Imagem 1">
@@ -20,9 +20,12 @@
       <img src="{{ url_for('static', filename='imgs/skins/skin-4.png') }}" alt="Imagem 4">
     </figure>
     <div class="menu-buttons">
-      <!--  onclick="change_page({{ url_for('selection.selection') }})" -->
-      <button>🎮 Iniciar</button>
-      <button>📊 Estatísticas</button>
+      <button class="btn-01" onclick="change_page({{ url_for('world-config.world_config') }})">
+        🎮 Iniciar
+      </button>
+      <button class="btn-01">
+        📊 Estatísticas
+      </button>
     </div>
   </main>
 </body>
