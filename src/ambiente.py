@@ -13,7 +13,7 @@ class Ambiente:
         self.__id:int = None
         self.__size:int = None
         self.__posicoes = {}
-        self.__agents = {}
+        self.__agents:dict[str, tuple] = {}
 
     @property
     def id(self):
@@ -118,7 +118,6 @@ class Ambiente:
                 self.__mundo[(i, j, 0)] = Sala()
         
         self.__mundo[(0,0,0)].objeto = 'S'
-        print(self.__mundo)
         
         if poco_qtd is None:
             poco_qtd = self.__size - 1
@@ -259,18 +258,17 @@ class Ambiente:
         '''
         status = ''
         
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
+        posicao = self.__agents[agente_id]
         
         # Verifica se o agente foi devorado pelo wumpus
-        devorado = 'W' in self.__mundo[pos_i][pos_j].objeto
+        devorado = 'W' in self.__mundo[posicao].objeto
         
         # Verifica se o agente caiu no poço
-        caiu = 'P' in self.__mundo[pos_i][pos_j].objeto
+        caiu = 'P' in self.__mundo[posicao].objeto
         
         vitoria = False
 
-        if pos_i == 0 and pos_j == 0:
+        if posicao == (0, 0, 0):
             if inventario['ouro'] > 0:
                 vitoria = True
         
@@ -284,10 +282,9 @@ class Ambiente:
             status = '-'
         
         saida = {
-            'percepcao':self.__mundo[pos_i][pos_j].percepcao,
+            'percepcao':self.__mundo[posicao].percepcao,
             'status':status
         }
-        
         
         return saida
     
@@ -296,12 +293,20 @@ class Ambiente:
         Função que exibe o estado do mundo pela prioridade da sala.
         '''
         saida = ''
+        linha = (min(self.__mundo, key=lambda x: x[0])[0], max(self.__mundo, key=lambda x: x[0])[0])
+        coluna = (min(self.__mundo, key=lambda x: x[1])[1], max(self.__mundo, key=lambda x: x[1])[1])
+        profundidade = (min(self.__mundo, key=lambda x: x[2])[2], max(self.__mundo, key=lambda x: x[2])[2])
 
-        for linha in self.__mundo:
-            for valor in linha:
-                saida += f' | {str(valor): ^3}'
-            saida += ' |\n'
-
+        for p in range(profundidade[0], profundidade[1] + 1):
+            for l in range(linha[0], linha[1] + 1):
+                for c in range(coluna[0], coluna[1] + 1):
+                    if (l, c, p) in self.__mundo:
+                        saida += f' | {str(self.__mundo[(l, c, p)]): ^3}'
+                    else:
+                        saida += ' |    '
+                saida += ' |\n'
+            saida += '\n'
+        
         return saida
     
     def show_percepcoes(self) -> str:
@@ -317,85 +322,101 @@ class Ambiente:
 
         return saida
 
-    def set_agente(self, agente_id:int, pos_i:int=None, pos_j:int=None):
-        if pos_i is None:
-            pos_i = 0
+    def set_agente(self, agente_id:int, pos_x:int=None, pos_y:int=None, pos_z:int = None):
+        if pos_x is None:
+            pos_x = 0
 
-        if pos_j is None:
-            pos_j = 0
+        if pos_y is None:
+            pos_y = 0
+
+        if pos_z is None:
+            pos_z = 0
             
-        self.__agents[agente_id] = { 'pos_i':pos_i, 'pos_j':pos_j}
-        self.__mundo[pos_i][pos_j].caminho = 'A'
+        posicao = (pos_x, pos_y, pos_z)
+        
+        self.__agents[agente_id] = posicao
+        self.__mundo[posicao].caminho = 'A'
         
     def mover(self, agente_id:int, direcao:str):
         direcoes = {
-            'N':(-1, 0),
-            'S':(1, 0),
-            'L':(0, 1),
-            'O':(0, -1),
+            'N':(-1, 0, 0),
+            'S':(1, 0, 0),
+            'O':(0, -1, 0),
+            'L':(0, 1, 0),
+            'C':(0, 0, -1),
+            'B':(0, 0, 1),
         }
         
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
+        posicao = self.__agents[agente_id]
+        destino = (
+            direcoes[direcao][0] + posicao[0],
+            direcoes[direcao][1] + posicao[1],
+            direcoes[direcao][2] + posicao[2],
+        )
 
-        self.__mundo[pos_i][pos_j].caminho = '-'
-        pos_i += direcoes[direcao][0]
-        pos_j += direcoes[direcao][1]
-        self.__mundo[pos_i][pos_j].caminho = 'A'
-        self.__agents[agente_id]['pos_i'] = pos_i
-        self.__agents[agente_id]['pos_j'] = pos_j
+
+        self.__mundo[posicao].caminho = '-'
+        self.__mundo[destino].caminho = 'A'
+        self.__agents[agente_id] = destino
     
     def atirar(self, agente_id:int, direcao:str):
         direcoes = {
-            'n':(-1, 0),
-            's':(1, 0),
-            'l':(0, 1),
-            'o':(0, -1),
+            'n':(-1, 0, 0),
+            's':(1, 0, 0),
+            'o':(0, -1, 0),
+            'l':(0, 1, 0),
+            'c':(0, 0, -1),
+            'b':(0, 0, 1),
         }
         
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
-        pos_i += direcoes[direcao][0]
-        pos_j += direcoes[direcao][1]
-
-        if 'W' in self.__mundo[pos_i][pos_j].objeto:
-            objeto = self.__mundo[pos_i][pos_j].objeto.replace('W', 'w')
-            self.__mundo[pos_i][pos_j].objeto = objeto
+        posicao = self.__agents[agente_id]
+        alvo = (
+            direcoes[direcao][0] + posicao[0],
+            direcoes[direcao][1] + posicao[1],
+            direcoes[direcao][2] + posicao[2],
+        )
+        
+        if 'W' in self.__mundo[alvo].objeto:
+            objeto = self.__mundo[alvo].objeto.replace('W', 'w')
+            self.__mundo[alvo].objeto = objeto
             return 'g'
     
     def pegar(self, agente_id:int):
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
+        posicao = self.__agents[agente_id]
         
-        if 'O' in self.__mundo[pos_i][pos_j].objeto:
-            objeto = self.__mundo[pos_i][pos_j].objeto.replace('O', 'o')
-            percepcao = self.__mundo[pos_i][pos_j].percepcao.replace('br', 'BR')
-            self.__mundo[pos_i][pos_j].objeto = objeto
-            self.__mundo[pos_i][pos_j].percepcao = percepcao
+        if 'O' in self.__mundo[posicao].objeto:
+            objeto = self.__mundo[posicao].objeto.replace('O', 'o')
+            percepcao = self.__mundo[posicao].percepcao.replace('br', 'BR')
+            self.__mundo[posicao].objeto = objeto
+            self.__mundo[posicao].percepcao = percepcao
 
             return 'O'
         else:
             return ''
         
     def direcoes_possiveis(self, agente_id:int):
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
+        posicao = self.__agents[agente_id]
 
         saida = ''
         
-        if pos_i != 0:
-            saida += 'N'
-        if pos_i != self.__size - 1:
-            saida += 'S'
-        if pos_j != 0:
-            saida += 'O'
-        if pos_j != self.__size - 1:
-            saida += 'L'
+        direcoes = {
+            (-1, 0, 0):'N',
+            (1, 0, 0):'S',
+            (0, -1, 0):'O',
+            (0, 1, 0):'L',
+            (0, 0, -1):'C',
+            (0, 0, 1):'B',
+        }
+        
+        for x,y,z in direcoes:
+            nova_posicao = (posicao[0] + x, posicao[1] + y, posicao[2] + z)
+
+            if nova_posicao in self.__mundo:
+                saida += direcoes[(x, y, z)]
 
         return saida
     
     def get_coordenada(self, agente_id):
-        pos_i = self.__agents[agente_id]['pos_i']
-        pos_j = self.__agents[agente_id]['pos_j']
+        posicao = self.__agents[agente_id]
         
-        return (pos_i, pos_j)
+        return posicao

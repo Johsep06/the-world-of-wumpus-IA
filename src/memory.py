@@ -4,7 +4,7 @@ from queue import PriorityQueue
 
 class Memoria:
     def __init__(self):
-        self.__memoria:dict[tuple[int, int], str] = {}
+        self.__memoria:dict[tuple[int, int, int], str] = {}
 
     def to_dict(self):
         dados = []
@@ -18,19 +18,25 @@ class Memoria:
         return dados
 
     def new(self,):
-        self.__memoria = {(0, 0):'S'}
+        self.__memoria = {(0, 0, 0):'S'}
     
-    def expendir_salas(self, posicao:tuple[int, int], direcoes:str):
+    def expendir_salas(self, posicao:tuple[int, int, int], direcoes:str):
         sentidos = {
-            'N':(-1, 0),
-            'S':(+1, 0),
-            'L':(0, +1),
-            'O':(0, -1)
+            'N':(-1, 0, 0),
+            'S':(+1, 0, 0),
+            'L':(0, +1, 0),
+            'O':(0, -1, 0),
+            'C':(0, 0, -1),
+            'B':(0, 0, 1),
         }
         
         for direcao in direcoes:
             sentido = sentidos[direcao]
-            nova_posicao = (posicao[0] + sentido[0], posicao[1] + sentido[1])
+            nova_posicao = (
+                posicao[0] + sentido[0],
+                posicao[1] + sentido[1],
+                posicao[2] + sentido[2]
+            )
             if nova_posicao in self.__memoria:
                 continue
             self.__memoria[nova_posicao] = 'd'
@@ -59,7 +65,7 @@ class Memoria:
     def get_memoria(self):
         return self.__memoria
 
-    def marcar_mapa(self, posicao:tuple[int, int], simbolo:str):
+    def marcar_mapa(self, posicao:tuple[int, int, int], simbolo:str):
         if self.__memoria[posicao].lower() == 'd':
             self.__memoria[posicao] = simbolo
         elif '!' in self.__memoria[posicao] or '?' in self.__memoria[posicao]:
@@ -71,10 +77,10 @@ class Memoria:
         else:
             self.__memoria[posicao] += simbolo
             
-    def suspeitar_salas(self, posicao:tuple[int, int], simbolo:str):
+    def suspeitar_salas(self, posicao:tuple[int, int, int], simbolo:str):
         salas_suspeitas = []
-        for i,j in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            posicao_suspeita = (posicao[0] + i, posicao[1] + j)
+        for i,j,k in [(-1, 0, 0), (1, 0, 0), (0, -1, 0), (0, 1, 0), (0, 0, 1), (0, 0, -1)]:
+            posicao_suspeita = (posicao[0] + i, posicao[1] + j, posicao[2] + k)
 
             if posicao_suspeita not in self.__memoria:
                 continue
@@ -100,8 +106,8 @@ class Memoria:
 
     def assegurar_salas(self, posicao:tuple[int, int]):
         salas_seguras = []
-        for i,j in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            posicao_segura = (posicao[0] + i, posicao[1] + j)
+        for i,j,k in [(-1, 0, 0), (1, 0, 0), (0, -1, 0), (0, 1, 0), (0, 0, 1), (0, 0, -1)]:
+            posicao_segura = (posicao[0] + i, posicao[1] + j, posicao[2] + k)
             if posicao_segura not in self.__memoria:
                 continue
 

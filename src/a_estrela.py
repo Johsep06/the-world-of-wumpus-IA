@@ -1,47 +1,47 @@
 from queue import PriorityQueue
 
-def __h_score(pos_inicial:tuple[int, int], pos_final:tuple[int, int]) -> int:
+def __h_score(pos_inicial:tuple[int, int, int], pos_final:tuple[int, int, int]) -> int:
     distacia_i = abs(pos_inicial[0] - pos_final[0])
     distacia_j = abs(pos_inicial[1] - pos_final[1])
+    distacia_k = abs(pos_inicial[2] - pos_final[2])
 
-    return distacia_i + distacia_j
+    return distacia_i + distacia_j + distacia_k
 
-def __expandir_posicao(posicao:tuple[int, int], mapa) -> list[tuple[int, int]]:
+def __expandir_posicao(posicao:tuple[int, int, int], mapa) -> list[tuple[int, int]]:
     vizinhos = []
     
-    for i,j in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-        vizinho = (posicao[0] + i, posicao[1] + j)
-        # if not 0 <= posicao[0] + i < tamanho:
-        #     continue
-        # if not 0 <= posicao[1] + j < tamanho:
-        #     continue
+    for i,j,k in [(-1, 0, 0), (1, 0, 0), (0, -1, 0), (0, 1, 0), (0, 0, 1), (0, 0, -1)]:
+        vizinho = (posicao[0] + i, posicao[1] + j, posicao[2] + k)
         if not vizinho in mapa:
             continue
         
-        vizinhos.append((posicao[0] + i, posicao[1] + j))
+        vizinhos.append((posicao[0] + i, posicao[1] + j, posicao[2] + k))
     
     return vizinhos
 
 def __converter_em_direcoes(inicio:tuple[int,int], caminho:dict[tuple, tuple]) -> str:
     direcao = ''
     direcoes = {
-            (-1, 0):'N',
-            (1, 0):'S',
-            (0, 1):'L',
-            (0, -1):'O',
+            (-1, 0, 0):'N',
+            (1, 0, 0):'S',
+            (0, 1, 0):'L',
+            (0, -1, 0):'O',
+            (0, 0, -1):'C',
+            (0, 0, 1):'B',
         }
     
     posicao = inicio
     for _ in range(len(caminho)):
         i = caminho[posicao][0] - posicao[0]
         j = caminho[posicao][1] - posicao[1]
+        k = caminho[posicao][2] - posicao[2]
         
-        direcao += str(direcoes[(i,j)])
+        direcao += str(direcoes[(i,j,k)])
         posicao = caminho[posicao]
 
     return direcao
 
-def a_estrela(inicio:tuple[int, int], destino:tuple[int, int], mapa:dict[tuple[int, int], str], obstaculos:list[str]) -> str:
+def a_estrela(inicio:tuple[int, int, int], destino:tuple[int, int, int], mapa:dict[tuple[int, int, int], str], obstaculos:list[str]) -> str:
     
     f_score = {celula:float('inf') for celula in list(mapa.keys())}
     g_score:dict[tuple, int] = {}
