@@ -420,3 +420,29 @@ class Ambiente:
         posicao = self.__agents[agente_id]
         
         return posicao
+
+    def get_indices(self):
+        posicoes = list(self.__mundo.keys())
+
+        x_menor = min(posicoes, key=lambda x: x[0])[0]
+        y_menor = min(posicoes, key=lambda x: x[1])[1]
+        z_menor = min(posicoes, key=lambda x: x[2])[2]
+
+        x_maior = max(posicoes, key=lambda x: x[0])[0]        
+        y_maior = max(posicoes, key=lambda x: x[0])[1]        
+        z_maior = max(posicoes, key=lambda x: x[0])[2]
+        
+        indices = [
+            (x_menor, x_maior),
+            (y_menor, y_maior),
+            (y_menor, z_maior),
+        ]
+
+        return indices
+    
+    def checar_posicao(self, posicao:tuple):
+        
+        if posicao not in self.__mundo:
+            return 'F'
+        
+        return self.__mundo[posicao].objeto

@@ -1,6 +1,7 @@
 # from src.a_estrela import a_estrela
 
 from queue import PriorityQueue
+from random import choice
 
 class Memoria:
     def __init__(self):
@@ -150,6 +151,22 @@ class Memoria:
                 localizacao = posicao
         return localizacao
     
+    def sala_aleatoria(self, posicao_atual):
+        localizacao = None
+        posicoes = list(self.__memoria.keys())
+
+        while True:
+            localizacao = choice(posicoes)
+            
+            ha_poco_na_sala = self.__memoria[localizacao] == 'P'
+            e_sala_atual = localizacao == posicao_atual
+
+            if ha_poco_na_sala or e_sala_atual:
+                continue
+            break
+        
+        return localizacao
+            
     def checar_sala(self, posicao:tuple[int, int]):
         return self.__memoria[posicao]         
     

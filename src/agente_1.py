@@ -1,7 +1,7 @@
 from src.agente import Agente
 import random
 
-class AgenteAleatorio(Agente):
+class Agente1(Agente):
     def __init__(self, mundo):
         super().__init__(mundo)
         self.__ja_atirou = False
