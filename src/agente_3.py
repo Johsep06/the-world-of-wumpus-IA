@@ -102,7 +102,7 @@ class Agente3(Agente):
             # Matou o Wumpus
             'X':+200,
             # Nada aconteceu
-            '-':-0.01,
+            '-':-1,
             # Morreu por Wumpus
             'W':-800,
             # Morreu por poço

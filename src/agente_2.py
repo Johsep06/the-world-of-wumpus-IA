@@ -35,8 +35,8 @@ class Agente2(Agente):
             if 'br' == percepcao:
                 self._memoria.assegurar_salas(sala_atual)
             
-            # if self._mundo.pegar(self.id) == 'O':
-            #     self.inventario['ouro'] += 1 
+            if self._mundo.pegar(self.id) == 'O':
+                self.inventario['ouro'] += 1 
         if 'b' in percepcao and self._memoria.checar_sala(sala_atual) == 'D':
             qtd_de_brisa = percepcao.count('b')
             qtd_de_brilho = percepcao.count('br')

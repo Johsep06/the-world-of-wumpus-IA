@@ -5,9 +5,7 @@ routes/__pycache__/
 .venv
 .env
 db.*
-app.py
 aviso.*
 config_db.py
 SQL/
 .$DER*
-teste.py
