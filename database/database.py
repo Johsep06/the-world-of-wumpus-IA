@@ -1,14 +1,13 @@
 # import mysql.connector
 import pymysql
 from pathlib import Path
-from dotenv import load_dotenv # type:ignore
+from dotenv import load_dotenv 
 import os
 
 from database.querys import init, insert, select
-# from database.config_db import DB_CONFIG # Dicionario com as Configuações do MySQL
 
 # Carrega as variáveis de ambiente do arquivo .env
-load_dotenv()
+load_dotenv(override=True)
 
 # Configurações do banco de dados
 DB_CONFIG = {
@@ -34,8 +33,7 @@ def init_db():
         cursor.execute(init.TABLE_MEMORIA)
         cursor.execute(init.TABLE_SALA)
         cursor.execute(init.TABLE_CELULA)
-        cursor.execute(init.TABLE_EXPLORACAO)
-        cursor.execute(init.TABLE_BASEADA)
+        cursor.execute(init.TABLE_EXECUCAO)
         connection.commit()
     except Exception as e:
         print('Erro ao criar o banco de dados:', str(e))
@@ -184,58 +182,6 @@ def save_baseada(baseada: dict):
             cursor.close()
             connection.close()
             print("Conexão com o MySQL encerrada.")
-
-def get_mundo_qtd() -> int:
-    mundo_qtd = None
-    connection = None
-    try:
-        # Conecta ao banco de dados MySQL
-        # connection = mysql.connector.connect(**DB_CONFIG)
-        connection = pymysql.connect(**DB_CONFIG)
-        cursor = connection.cursor()
-        
-        cursor.execute(init.USE_DATABASE)
-        connection.commit()
-        
-        # Executa a consulta para obter a quantidade de mundos
-        cursor.execute(select.MUNDO_QTD)
-        mundo_qtd = cursor.fetchone()
-        
-    except Exception as e:
-        print('Erro ao acessar o banco de dados:', str(e))
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-            print("Conexão com o MySQL encerrada.")
-    
-    return mundo_qtd[0] if mundo_qtd else 0
-
-def get_agente_qtd() -> int:
-    agente_qtd = None
-    connection = None
-    try:
-        # Conecta ao banco de dados MySQL
-        # connection = mysql.connector.connect(**DB_CONFIG)
-        connection = pymysql.connect(**DB_CONFIG)
-        cursor = connection.cursor()
-        
-        cursor.execute(init.USE_DATABASE)
-        connection.commit()
-        
-        # Executa a consulta para obter a quantidade de Agentes
-        cursor.execute(select.AGENTE_QTD)
-        agente_qtd = cursor.fetchone()
-        
-    except Exception as e:
-        print('Erro ao acessar o banco de dados:', str(e))
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
-            print("Conexão com o MySQL encerrada.")
-    
-    return agente_qtd[0] if agente_qtd else 0
 
 def get_mundo(mundo_id:int):
     mundo = None

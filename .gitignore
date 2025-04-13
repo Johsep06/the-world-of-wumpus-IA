@@ -9,3 +9,5 @@ aviso.*
 config_db.py
 SQL/
 .$DER*
+teste.py
+app.py

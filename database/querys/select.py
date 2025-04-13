@@ -7,9 +7,10 @@ SELECT *
 FROM MUNDO
 WHERE ID = %(mundo_id)s'''
 
-MUNDO_QTD = '''
-SELECT COUNT(ID)
-FROM MUNDO;'''
+MUNDO_BY_REGISTRO = '''
+SELECT *
+FROM MUNDO
+WHERE REGISTRO = %(registro)s;'''
 
 SALA = '''
 SELECT *
@@ -18,8 +19,4 @@ WHERE MUNDO_ID = %(mundo_id)s;'''
 
 AGENTE = '''
 SELECT *
-FROM AGENTE;'''
-
-AGENTE_QTD = '''
-SELECT COUNT(ID)
 FROM AGENTE;'''
