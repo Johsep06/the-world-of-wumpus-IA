@@ -1,7 +1,6 @@
 import random
 
 from src.sala import Sala
-from database.database import get_mundo_qtd
 from datetime import datetime
 
 class Ambiente:
@@ -155,8 +154,8 @@ class Ambiente:
             pos = self.__set_gold() 
             self.__posicoes['O'].append(pos) 
     
-    def load(self, size:int, id:int, salas:tuple[tuple]):
-        self.__size = size
+    def load(self, tamanho:int, id:int, salas:tuple[tuple], **args):
+        self.__size = tamanho
         self.__id = id
         
         self.__posicoes = {
@@ -429,13 +428,12 @@ class Ambiente:
         z_menor = min(posicoes, key=lambda x: x[2])[2]
 
         x_maior = max(posicoes, key=lambda x: x[0])[0]        
-        y_maior = max(posicoes, key=lambda x: x[0])[1]        
-        z_maior = max(posicoes, key=lambda x: x[0])[2]
+        y_maior = max(posicoes, key=lambda x: x[1])[1]        
+        z_maior = max(posicoes, key=lambda x: x[2])[2]
         
         indices = [
-            (x_menor, x_maior),
-            (y_menor, y_maior),
-            (y_menor, z_maior),
+            (x_menor, y_menor, z_menor),
+            (x_maior, y_maior, z_maior)
         ]
 
         return indices

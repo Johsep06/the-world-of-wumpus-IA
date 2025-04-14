@@ -4,7 +4,6 @@ routes/__pycache__/
 *.pyc
 .venv
 .env
-db.*
 aviso.*
 config_db.py
 SQL/

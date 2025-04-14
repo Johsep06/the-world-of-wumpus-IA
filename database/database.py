@@ -201,7 +201,7 @@ def get_mundo(mundo_id:int):
         cursor.execute(select.MUNDO_BY_ID, param)
         mundo = cursor.fetchone()
         
-        
+        param['mundo_id'] = mundo[2].strftime('%Y-%m-%d %H:%M:%S')
         cursor.execute(select.SALA, param)
         salas = cursor.fetchall()
         
@@ -218,6 +218,49 @@ def get_mundo(mundo_id:int):
         'size':mundo[1],
         'salas':salas
     }
+
+def get_all_worlds():
+    dados = []
+    mundos = None
+    salas = None
+    connection = None
+    try:
+        # Conecta ao banco de dados MySQL
+        # connection = mysql.connector.connect(**DB_CONFIG)
+        connection = pymysql.connect(**DB_CONFIG)
+        cursor = connection.cursor()
+        
+        cursor.execute(init.USE_DATABASE)
+        connection.commit()
+        
+        # Executa a consulta para obter a quantidade de mundos
+        cursor.execute(select.MUNDO)
+        mundos = cursor.fetchall()
+        
+        for mundo in mundos:
+            param = {'mundo_id':mundo[2].strftime('%Y-%m-%d %H:%M:%S')}
+            cursor.execute(select.SALA, param)
+            salas = cursor.fetchall()
+            dados.append ({
+                'id':mundo[0], 
+                'tamanho':mundo[1], 
+                'registro':param['mundo_id'],
+                'salas':salas
+            })
+        
+        
+        # cursor.execute(select.SALA)
+        # salas = cursor.fetchall()
+        
+    except Exception as e:
+        print('Erro ao acessar o banco de dados:', str(e))
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+            print("Conexão com o MySQL encerrada.")
+    
+    return dados
 
 # Exemplo de uso
 if __name__ == "__main__":
