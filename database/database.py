@@ -215,11 +215,11 @@ def get_mundo(mundo_id:int):
     
     return {
         'id':mundo[0],
-        'size':mundo[1],
+        'tamanho':mundo[1],
         'salas':salas
     }
 
-def get_all_worlds():
+def get_all_worlds() -> list[dict]:
     dados = []
     mundos = None
     salas = None

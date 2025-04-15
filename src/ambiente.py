@@ -444,3 +444,15 @@ class Ambiente:
             return 'F'
         
         return self.__mundo[posicao].objeto
+
+    def mundo_formatado(self) -> dict:
+        saida = {}
+
+        for posicao in self.__mundo:
+            dx, dy, dz = posicao
+            saida[f'{dx},{dy},{dz}'] = {
+                'objeto':self.__mundo[posicao].objeto,
+                'percepcao':self.__mundo[posicao].percepcao
+            }
+            
+        return saida
